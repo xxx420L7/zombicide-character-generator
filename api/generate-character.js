@@ -102,10 +102,13 @@ export default async function handler(req, res) {
       const getRandomElement = (array) => array[Math.floor(Math.random() * array.length)]
 
       // Sistema de progresión CORRECTO según Zombicide 2nd Edition
-      const generateCharacterByZone = (zoneIndex) => {
+      const generateCharacterByZone = (zoneIndex = null) => {
+        // Si no se especifica zona, elegir aleatoriamente
+        const actualZoneIndex = zoneIndex !== null ? zoneIndex : Math.floor(Math.random() * 4);
+
         const name = getRandomElement(characterNames)
         const archetype = getRandomElement(characterArchetypes)
-        const zone = zones[zoneIndex]
+        const zone = zones[actualZoneIndex]
 
         let health = 3
         let experience = 0
