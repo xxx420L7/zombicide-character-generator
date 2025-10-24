@@ -37,9 +37,9 @@ La historia debe tener este formato:
 
 Historia:`;
 
-    // Lista de modelos Groq para intentar en orden de preferencia
+    // Lista de modelos Groq disponibles para intentar en orden de preferencia
     const models = [
-      'llama-3.1-70b-versatile',
+      'llama-3.3-70b-versatile',
       'llama-3.1-8b-instant',
       'mixtral-8x7b-32768',
       'gemma2-9b-it'
