@@ -451,16 +451,27 @@
         /* Image Container */
         #characterImageContainer {
             text-align: center;
-            margin-bottom: 20px;
+            margin: 0 auto 20px auto;
             display: none;
+            width: 100%;
+        }
+
+        #characterImageContainer.show {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         #characterImage {
             max-width: 100%;
-            max-height: 300px;
+            max-height: 350px;
             border-radius: 15px;
             border: 3px solid #ff6b6b;
             box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            display: block;
+            margin: 0 auto;
+            object-fit: contain;
         }
 
         /* Loading Spinner */
@@ -750,14 +761,6 @@
                     <div class="stat-box">
                         <div class="stat-label">⚔️ Arma Inicial</div>
                         <div class="stat-value" id="startingWeapon"></div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">🎯 Zona Actual</div>
-                        <div class="stat-value" id="rank"></div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-label">⭐ Experiencia</div>
-                        <div class="stat-value" id="experience"></div>
                     </div>
                 </div>
 
@@ -1483,7 +1486,7 @@
 
             Character: ${currentCharacter.name}, Archetype: ${currentCharacter.archetype}, from Zombicide board game, ${currentCharacter.rank} difficulty`;
 
-            document.getElementById('characterImageContainer').style.display = 'block';
+            document.getElementById('characterImageContainer').classList.add('show');
             document.getElementById('characterImage').style.display = 'none';
 
             // Show loading spinner
@@ -1512,7 +1515,7 @@
                 await pollForImageCompletion(prediction.id);
 
             } catch (error) {
-                document.getElementById('characterImageContainer').style.display = 'none';
+                document.getElementById('characterImageContainer').classList.remove('show');
                 showApiStatus('Error al generar imagen: ' + error.message, 'error');
             }
         }
@@ -1544,7 +1547,7 @@
                     }
                 } catch (error) {
                     document.getElementById('imageLoadingSpinner').remove();
-                    document.getElementById('characterImageContainer').style.display = 'none';
+                    document.getElementById('characterImageContainer').classList.remove('show');
                     showApiStatus('Error: ' + error.message, 'error');
                 }
             };
