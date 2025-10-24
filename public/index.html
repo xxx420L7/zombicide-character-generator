@@ -1376,9 +1376,8 @@
             document.getElementById('characterName').textContent = character.name;
             document.getElementById('characterClass').textContent = character.archetype;
 
-            // Remove rank and experience from main display, show in zone info section
+            // Display character health
             document.getElementById('health').textContent = `${character.health} ❤️`;
-            document.getElementById('startingWeapon').textContent = character.startingWeapon;
 
             // Display character story
             const storyElement = document.getElementById('characterStory');
