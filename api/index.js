@@ -122,7 +122,9 @@ export default async function handler(req, res) {
 
         switch(zoneIndex) {
           case 0: // Zona Azul (0-5 XP)
-            health = 3
+            // HP variado para evitar repetición excesiva de 6
+            const healthPoolBlue = [3, 4, 5]; // Mayor variedad de HP en zona azul
+            health = healthPoolBlue[Math.floor(Math.random() * healthPoolBlue.length)];
             experience = Math.floor(Math.random() * 6) // 0-5 XP
             blueSkill.unlocked = true
             yellowSkill.unlocked = false
@@ -131,7 +133,9 @@ export default async function handler(req, res) {
             allCharacterSkills = [blueSkill, yellowSkill, orangeSkill, redSkill]
             break
           case 1: // Zona Amarilla (6-12 XP)
-            health = 3
+            // HP en zona amarilla: más variado, 3-5 HP
+            const healthPoolYellow = [3, 4, 5];
+            health = healthPoolYellow[Math.floor(Math.random() * healthPoolYellow.length)];
             experience = 6 + Math.floor(Math.random() * 7) // 6-12 XP
             blueSkill.unlocked = true
             yellowSkill.unlocked = true
@@ -140,7 +144,9 @@ export default async function handler(req, res) {
             allCharacterSkills = [blueSkill, yellowSkill, orangeSkill, redSkill]
             break
           case 2: // Zona Naranja (13-20 XP)
-            health = 4
+            // HP en zona naranja: 4-6 HP (según reglas oficiales)
+            const healthPoolOrange = [4, 5, 6];
+            health = healthPoolOrange[Math.floor(Math.random() * healthPoolOrange.length)];
             experience = 13 + Math.floor(Math.random() * 8) // 13-20 XP
             blueSkill.unlocked = true
             yellowSkill.unlocked = true
@@ -149,7 +155,9 @@ export default async function handler(req, res) {
             allCharacterSkills = [blueSkill, yellowSkill, orangeSkill, redSkill]
             break
           case 3: // Zona Roja (21+ XP)
-            health = 5
+            // HP en zona roja: 5-7 HP (más variación en niveles altos)
+            const healthPoolRed = [5, 6, 7];
+            health = healthPoolRed[Math.floor(Math.random() * healthPoolRed.length)];
             experience = 21 + Math.floor(Math.random() * 10) // 21-30 XP
             blueSkill.unlocked = true
             yellowSkill.unlocked = true
