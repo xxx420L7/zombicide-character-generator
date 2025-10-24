@@ -1,0 +1,39 @@
+name: Build and Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build static site
+      run: |
+        mkdir -p dist
+        cp -r public/* dist/
+        mkdir -p dist/api
+        # Crear archivos API estáticos para GitHub Pages
+        echo 'window.API_BASE_URL = "https://zombicide-character-generator.onrender.com";' > dist/api/config.js
+        echo 'export default async function handler(req, res) { res.status(500).json({ error: "GitHub Pages no soporta serverless functions. Por favor usa la versión de Vercel para generación con IA." }); }' > dist/api/generate-story.js.bak
+        echo 'export default async function handler(req, res) { res.status(500).json({ error: "GitHub Pages no soporta serverless functions. Por favor usa la versión de Vercel para generación con IA." }); }' > dist/api/generate-image.js.bak
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist

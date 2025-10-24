@@ -1,0 +1,371 @@
+name: Deploy Mobile Version to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy-mobile:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build mobile version
+      run: |
+        mkdir -p dist
+        cp -r public/* dist/
+
+        # Create mobile-optimized version with direct API calls
+        cat > dist/index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Personajes Zombicide</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1b1b 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.8);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid #ff4444;
+            box-shadow: 0 0 20px rgba(255,68,68,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #ff4444;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .generate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff4444, #cc0000);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,68,68,0.4);
+        }
+        .generate-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .character-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .character-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff4444;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .character-info {
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .character-info strong {
+            color: #ff6666;
+        }
+        .skills-section {
+            margin-top: 15px;
+        }
+        .skill-badge {
+            display: inline-block;
+            background: rgba(255,68,68,0.2);
+            border: 1px solid #ff4444;
+            border-radius: 15px;
+            padding: 4px 8px;
+            margin: 3px;
+            font-size: 12px;
+        }
+        .story-section {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-style: italic;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .image-container {
+            text-align: center;
+            margin: 15px 0;
+        }
+        .character-image {
+            max-width: 100%;
+            border-radius: 10px;
+            border: 2px solid #ff4444;
+        }
+        .loading {
+            text-align: center;
+            color: #ff6666;
+            font-style: italic;
+        }
+        .error {
+            color: #ff6666;
+            text-align: center;
+            padding: 10px;
+            background: rgba(255,0,0,0.1);
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .notice {
+            background: rgba(255,255,0,0.1);
+            border: 1px solid #ffcc00;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #ffcc00;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 11px;
+            color: #888;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧟 Generador Zombicide 2e</h1>
+
+        <div class="notice">
+            ⚠️ Versión móvil optimizada. Las funciones de IA están deshabilitadas en esta versión.
+        </div>
+
+        <button class="generate-btn" onclick="generateCharacter()">
+            🎲 Generar Personaje
+        </button>
+
+        <div id="character-display" class="hidden">
+            <div class="character-card">
+                <div class="character-name" id="character-name"></div>
+
+                <div class="character-info">
+                    <strong>Arquetipo:</strong> <span id="character-archetype"></span><br>
+                    <strong>Edad:</strong> <span id="character-age"></span> años<br>
+                    <strong>Profesión:</strong> <span id="character-profession"></span><br>
+                    <strong>Personalidad:</strong> <span id="character-personality"></span><br>
+                    <strong>Supervivencia:</strong> <span id="character-survival"></span> meses
+                </div>
+
+                <div class="skills-section">
+                    <strong>Habilidades:</strong><br>
+                    <div id="character-skills"></div>
+                </div>
+
+                <div class="story-section" id="character-story"></div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading hidden">Generando personaje...</div>
+        <div id="error" class="error hidden"></div>
+
+        <div class="footer">
+            Generador de Personajes Zombicide 2nd Edition<br>
+            <a href="https://zombicide-app.vercel.app" style="color: #ff6666;">🔄 Versión completa con IA</a>
+        </div>
+    </div>
+
+    <script>
+        // Arrays en español para generación infinita
+        const professions = [
+            "Médico de emergencias", "Chef gourmet", "Ingeniero civil", "Profesor de química",
+            "Policía", "Bombero", "Mecánico", "Soldado", "Paramédico", "Farmacéutico",
+            "Electricista", "Fontanero", "Arquitecto", "Programador", "Constructor",
+            "Camarero", "Taxista", "Repartidor", "Seguridad privada", "Personal de limpieza"
+        ];
+
+        const locations = [
+            "Madrid", "Barcelona", "Valencia", "Sevilla", "Bilbao", "Málaga", "Murcia",
+            "Palma", "Las Palmas", "Zaragoza", "A Coruña", "Vitoria", "Granada",
+            "Tenerife", "Córdoba", "Valladolid", "Vigo", "Gijón", "Hospitalet", "Alicante"
+        ];
+
+        const physicalTraits = [
+            "Alto y delgado", "Bajo y robusto", "Complexión atlética", "Contextura fuerte",
+            "Estructura mediana", "Físico musculoso", "Delgado pero resistente",
+            "Robusto y poderoso", "Ágil y ligero", "Fuerte y compacto"
+        ];
+
+        const personalityTraits = [
+            "Valiente y protector", "Cauteloso y observador", "Optimista y resiliente",
+            "Pragmático y racional", "Impulsivo y decidido", "Compasivo y solidario",
+            "Líder natural", "Solitario y autosuficiente", "Estratégico y calculador",
+            "Temerario y audaz"
+        ];
+
+        const lifeEvents = [
+            "Perdió a su familia", "Escapó de un hospital colapsado", "Sobrevivió a una mordedura",
+            "Formó una comunidad", "Traicionado por aliados", "Rescató a extraños",
+            "Descubrió una cura parcial", "Perdió su refugio", "Encontró un arsenal",
+            "Crossó el país", "Sobrevivió al invierno", "Vio nacer un bebé"
+        ];
+
+        const maleNames = ["Alejandro", "Carlos", "Miguel", "Javier", "Luis", "Sergio", "Raúl", "Pablo"];
+        const femaleNames = ["Ana", "María", "Carmen", "Laura", "Sofía", "Lucía", "Elena", "Isabel"];
+        const surnames = ["García", "Rodríguez", "López", "Martínez", "Sánchez", "Pérez", "Gómez", "Díaz"];
+
+        const archetypes = {
+            blue: { name: "Novato", skills: 1, color: "#4A90E2" },
+            yellow: { name: "Superviviente", skills: 2, color: "#FFD700" },
+            orange: { name: "Experto", skills: 4, color: "#FF8C00" },
+            red: { name: "Legendario", skills: 7, color: "#DC143C" }
+        };
+
+        const skills = {
+            blue: ["+1 Acción", "Movimiento +1", "Carga pesada", "Buscador", "Ingenioso"],
+            yellow: ["+1 Dado de combate", "Esquiva", "Carrera", "Puntería", "Luchador"],
+            orange: ["+1 Acción", "Ataque adicional", "Defensa", "Combate cercano", "Tiro rápido"],
+            red: ["Maestro combate", "Experto armas", "Líder", "Estratega", "Superviviente"]
+        };
+
+        function generateRandomName() {
+            const isMale = Math.random() > 0.5;
+            const firstNames = isMale ? maleNames : femaleNames;
+            const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const surname = surnames[Math.floor(Math.random() * surnames.length)];
+            const nickname = isMale ? "El Lobo" : "La Pantera";
+            return `${firstName} "${nickname}" ${surname}`;
+        }
+
+        function generatePersonaje() {
+            const name = generateRandomName();
+            const archetypeType = Object.keys(archetypes)[Math.floor(Math.random() * Object.keys(archetypes).length)];
+            const archetype = archetypes[archetypeType];
+            const age = Math.floor(Math.random() * 40) + 20;
+            const profession = professions[Math.floor(Math.random() * professions.length)];
+            const location = locations[Math.floor(Math.random() * locations.length)];
+            const personality = personalityTraits[Math.floor(Math.random() * personalityTraits.length)];
+            const physical = physicalTraits[Math.floor(Math.random() * physicalTraits.length)];
+            const lifeEvent = lifeEvents[Math.floor(Math.random() * lifeEvents.length)];
+            const survivalTime = Math.floor(Math.random() * 24) + 1;
+
+            const characterSkills = [];
+            const totalSkills = archetype.skills;
+            const skillLevels = ["blue", "yellow", "orange", "red"];
+
+            for (let i = 0; i < totalSkills; i++) {
+                const levelIndex = Math.min(Math.floor(i / 2), skillLevels.length - 1);
+                const level = skillLevels[levelIndex];
+                const levelSkills = skills[level];
+                const skill = levelSkills[Math.floor(Math.random() * levelSkills.length)];
+                if (!characterSkills.includes(skill)) {
+                    characterSkills.push(skill);
+                }
+            }
+
+            const story = `Antes del apocalipsis, ${name} era un ${profession.toLowerCase()} de ${age} años viviendo en ${location}. Físicamente era ${physical.toLowerCase()} y su personalidad se caracterizaba por ser ${personality.toLowerCase()}.
+
+Cuando todo comenzó, ${lifeEvent.toLowerCase()}. Este evento traumático forjó su determinación de sobrevivir. Han pasado ${survivalTime} meses desde que el mundo se derrumbó, y ${name.split(" ")[0]} ha aprendido a adaptarse, usando su experiencia como ${profession.toLowerCase()} para navegar este nuevo mundo infestado de muertos vivientes.`;
+
+            return {
+                name, archetype: archetype.name, age, profession, location,
+                personality, physical, lifeEvent, survivalTime,
+                skills: characterSkills, story
+            };
+        }
+
+        function generateCharacter() {
+            const btn = document.querySelector('.generate-btn');
+            const display = document.getElementById('character-display');
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+
+            btn.disabled = true;
+            display.classList.add('hidden');
+            error.classList.add('hidden');
+            loading.classList.remove('hidden');
+
+            try {
+                setTimeout(() => {
+                    const character = generatePersonaje();
+
+                    document.getElementById('character-name').textContent = character.name;
+                    document.getElementById('character-archetype').textContent = character.archetype;
+                    document.getElementById('character-age').textContent = character.age;
+                    document.getElementById('character-profession').textContent = character.profession;
+                    document.getElementById('character-personality').textContent = character.personality;
+                    document.getElementById('character-survival').textContent = character.survivalTime;
+
+                    const skillsDiv = document.getElementById('character-skills');
+                    skillsDiv.innerHTML = character.skills.map(skill =>
+                        `<span class="skill-badge">${skill}</span>`
+                    ).join('');
+
+                    document.getElementById('character-story').textContent = character.story;
+
+                    loading.classList.add('hidden');
+                    display.classList.remove('hidden');
+                    btn.disabled = false;
+                }, 1000);
+            } catch (err) {
+                loading.classList.add('hidden');
+                error.textContent = 'Error: ' + err.message;
+                error.classList.remove('hidden');
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
+EOF
+
+        echo "📱 Mobile version built successfully"
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./dist
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

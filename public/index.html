@@ -5,48 +5,188 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Personajes - Zombicide 2nd Edition</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #2c1810 0%, #4a2c1a 100%);
             color: #e8e8e8;
-            margin: 0;
-            padding: 20px;
             min-height: 100vh;
+            padding: 10px;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             border-radius: 15px;
-            padding: 30px;
+            padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         h1 {
             text-align: center;
             color: #ff6b6b;
-            font-size: 2.5em;
+            font-size: 2em;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        /* Auth Section */
+        .auth-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .auth-tab.active {
+            border-bottom-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1em;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8787);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .user-info {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4CAF50;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .user-email {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #d32f2f;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: none;
+        }
+
+        .main-content.active {
+            display: block;
         }
 
         .button-container {
-            text-align: center;
-            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         .generate-btn {
             background: linear-gradient(45deg, #ff6b6b, #ff8787);
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 1.2em;
-            border-radius: 25px;
+            padding: 15px 20px;
+            font-size: 1em;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-            margin: 0 10px;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
         }
 
         .generate-btn:hover {
@@ -54,10 +194,20 @@
             box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
         }
 
+        .btn-icon {
+            font-size: 1.2em;
+        }
+
+        .btn-text {
+            font-size: 0.9em;
+            line-height: 1.2;
+        }
+
+        /* Character Card */
         .character-card {
             background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             margin: 20px 0;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
             border: 2px solid #ff6b6b;
@@ -65,32 +215,32 @@
         }
 
         .character-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 2px solid #ff6b6b;
         }
 
         .character-name {
-            font-size: 1.8em;
+            font-size: 1.5em;
             color: #ff6b6b;
             font-weight: bold;
+            margin-bottom: 10px;
         }
 
         .character-class {
-            font-size: 1.2em;
+            font-size: 1.1em;
             color: #ffd700;
             background: rgba(255, 215, 0, 0.1);
-            padding: 5px 15px;
+            padding: 8px 16px;
             border-radius: 20px;
+            display: inline-block;
         }
 
         .stats-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
             margin-bottom: 25px;
         }
 
@@ -99,17 +249,20 @@
             padding: 15px;
             border-radius: 10px;
             border-left: 4px solid #ff6b6b;
+            text-align: center;
         }
 
         .stat-label {
             font-weight: bold;
             color: #ffd700;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 0.9em;
         }
 
         .stat-value {
-            font-size: 1.1em;
+            font-size: 1em;
             color: #e8e8e8;
+            line-height: 1.3;
         }
 
         .skills-container {
@@ -117,17 +270,18 @@
         }
 
         .skills-title {
-            font-size: 1.3em;
+            font-size: 1.2em;
             color: #ff6b6b;
             margin-bottom: 15px;
             border-bottom: 1px solid #ff6b6b;
-            padding-bottom: 5px;
+            padding-bottom: 8px;
+            text-align: center;
         }
 
         .skills-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
         }
 
         .skill-item {
@@ -140,23 +294,196 @@
         .skill-name {
             font-weight: bold;
             color: #ff6b6b;
+            margin-bottom: 5px;
         }
 
         .skill-description {
             color: #cccccc;
             font-size: 0.9em;
-            margin-top: 5px;
+            line-height: 1.3;
         }
 
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-zone {
+            font-size: 0.8em;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .skill-blue {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+            border: 1px solid #2196F3;
+        }
+
+        .skill-yellow {
+            background: rgba(255, 193, 7, 0.2);
+            color: #FFC107;
+            border: 1px solid #FFC107;
+        }
+
+        .skill-orange {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FF9800;
+            border: 1px solid #FF9800;
+        }
+
+        .skill-red {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 1px solid #f44336;
+        }
+
+        .skill-purple {
+            background: rgba(156, 39, 176, 0.2);
+            color: #9C27B0;
+            border: 1px solid #9C27B0;
+        }
+
+        .skill-gold {
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            border: 1px solid #FFD700;
+        }
+
+        .skill-choice {
+            margin-top: 8px;
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: #ffd700;
+            text-align: center;
+            border: 1px dashed rgba(255, 215, 0, 0.5);
+        }
+
+        .skill-special {
+            margin-top: 8px;
+            padding: 6px 10px;
+            background: rgba(156, 39, 176, 0.1);
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: #e1bee7;
+            text-align: center;
+            border: 1px solid rgba(156, 39, 176, 0.3);
+        }
+
+        /* API Config */
+        .api-config {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .api-config h3 {
+            color: #ffd700;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .api-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .api-input-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ff6b6b;
+            background: rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        .api-checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .api-checkbox-group label {
+            display: flex;
+            align-items: flex-start;
+            color: #ffd700;
+            cursor: pointer;
+            line-height: 1.3;
+            gap: 10px;
+        }
+
+        .api-checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        .api-save-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s ease;
+        }
+
+        .api-save-btn:hover {
+            background: #45a049;
+        }
+
+        /* Image Container */
+        #characterImageContainer {
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        #characterImage {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 15px;
+            border: 3px solid #ff6b6b;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Loading Spinner */
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        /* Status Messages */
         .api-status {
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
             text-align: center;
             font-weight: bold;
         }
@@ -178,279 +505,956 @@
             color: #FFC107;
             border: 1px solid #FFC107;
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 5px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+
+            .button-container {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .generate-btn {
+                min-height: 80px;
+                padding: 20px;
+            }
+
+            .btn-text {
+                font-size: 1em;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .skills-list {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-tabs {
+                flex-direction: column;
+            }
+
+            .user-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .api-input-group {
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                padding: 10px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.4em;
+                margin-bottom: 15px;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .character-name {
+                font-size: 1.3em;
+            }
+
+            .generate-btn {
+                min-height: 70px;
+                padding: 15px;
+            }
+        }
+
+        /* My Characters Section */
+        .my-characters {
+            margin-top: 30px;
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .my-characters h2 {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .saved-character {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid #ff6b6b;
+            border-radius: 10px;
+            padding: 15px;
+            position: relative;
+        }
+
+        .saved-character-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .saved-character-name {
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .delete-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .delete-btn:hover {
+            background: #d32f2f;
+        }
+
+        .no-characters {
+            text-align: center;
+            color: #ccc;
+            font-style: italic;
+            padding: 40px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🧟 Generador de Personajes - Zombicide 2nd Edition 🧟</h1>
 
-        <div class="button-container">
-            <button class="generate-btn" onclick="generateCharacter()">
-                🎲 Generar Nuevo Personaje
-            </button>
-            <button class="generate-btn" onclick="generateCharacterImage()" style="background: linear-gradient(45deg, #9C27B0, #BA68C8);">
-                🎨 Generar Imagen IA
-            </button>
-            <button class="generate-btn" onclick="saveCharacter()" style="background: linear-gradient(45deg, #4CAF50, #66BB6A);">
-                💾 Guardar Personaje
-            </button>
-            <button class="generate-btn" onclick="printCharacter()" style="background: linear-gradient(45deg, #2196F3, #42A5F5);">
-                🖨️ Imprimir Personaje
-            </button>
+        <!-- Authentication Section -->
+        <div id="authSection" class="auth-container">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('login')">Iniciar Sesión</button>
+                <button class="auth-tab" onclick="switchTab('register')">Registrarse</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form active">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" required placeholder="tu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña:</label>
+                        <input type="password" id="loginPassword" required placeholder="Tu contraseña">
+                    </div>
+                    <button type="submit" class="auth-btn">Iniciar Sesión</button>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="auth-form">
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="registerUsername">Nombre de Usuario:</label>
+                        <input type="text" id="registerUsername" required placeholder="Tu nombre de jugador">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email:</label>
+                        <input type="email" id="registerEmail" required placeholder="tu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Contraseña:</label>
+                        <input type="password" id="registerPassword" required placeholder="Mínimo 6 caracteres" minlength="6">
+                    </div>
+                    <button type="submit" class="auth-btn">Crear Cuenta</button>
+                </form>
+            </div>
         </div>
 
-        <div class="api-config" style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-            <h3 style="color: #ffd700; margin-top: 0;">⚙️ Configuración API de IA</h3>
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                <input type="password" id="apiKey" placeholder="Ingresa tu API Key de Replicate.com"
-                       style="width: 300px; padding: 10px; border-radius: 5px; border: 1px solid #ff6b6b; background: rgba(0,0,0,0.3); color: white;">
-                <button onclick="saveApiKey()" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                    Guardar API Key
+        <!-- User Info (when logged in) -->
+        <div id="userInfo" class="user-info" style="display: none;">
+            <div>
+                <div style="color: #4CAF50; font-size: 0.9em; margin-bottom: 5px;">Usuario:</div>
+                <div class="user-email" id="userEmail"></div>
+            </div>
+            <button class="logout-btn" onclick="handleLogout()">Cerrar Sesión</button>
+        </div>
+
+        <!-- Main Content -->
+        <div id="mainContent" class="main-content">
+            <div class="button-container">
+                <button class="generate-btn" onclick="generateCharacter()">
+                    <span class="btn-icon">🎲</span>
+                    <span class="btn-text">Generar Nuevo Personaje</span>
+                </button>
+                <button class="generate-btn" onclick="generateCharacterImage()" style="background: linear-gradient(45deg, #9C27B0, #BA68C8);">
+                    <span class="btn-icon">🎨</span>
+                    <span class="btn-text">Generar Imagen IA</span>
+                </button>
+                <button class="generate-btn" onclick="saveCharacter()" style="background: linear-gradient(45deg, #4CAF50, #66BB6A);">
+                    <span class="btn-icon">💾</span>
+                    <span class="btn-text">Guardar Personaje</span>
+                </button>
+                <button class="generate-btn" onclick="printCharacter()" style="background: linear-gradient(45deg, #2196F3, #42A5F5);">
+                    <span class="btn-icon">🖨️</span>
+                    <span class="btn-text">Imprimir Personaje</span>
                 </button>
             </div>
-            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
-                <label style="display: flex; align-items: center; color: #ffd700; cursor: pointer;">
-                    <input type="checkbox" id="autoGenerateImage" checked onchange="saveAutoGeneratePreference()" style="margin-right: 8px; width: 18px; height: 18px;">
-                    🎨 Generar imagen automáticamente
-                </label>
-                <span style="color: #ccc; font-size: 0.9em;">(Añade ~30-60 segundos por personaje)</span>
-            </div>
-            <p style="font-size: 0.9em; color: #ccc; margin-top: 10px;">
-                💡 Obtén tu API key en <a href="https://replicate.com/account/api-tokens" target="_blank" style="color: #4CAF50;">Replicate.com</a>
-            </p>
-            <div id="apiStatus"></div>
-        </div>
 
-        <div id="characterCard" class="character-card">
-            <div class="character-header">
-                <div class="character-name" id="characterName"></div>
-                <div class="character-class" id="characterClass"></div>
+            <div class="api-config" style="background: rgba(76, 175, 80, 0.1); border: 1px solid #4CAF50;">
+                <h3 style="color: #4CAF50;">✅ Generación de imágenes con IA habilitada</h3>
+                <p style="font-size: 0.9em; color: #ccc; text-align: center; margin: 15px 0;">
+                    🎨 Las imágenes se generarán automáticamente para cada personaje<br>
+                    <small>Usando tecnología de IA avanzada (Stable Diffusion)</small>
+                </p>
+                <div id="apiStatus"></div>
             </div>
 
-            <div id="characterImageContainer" style="text-align: center; margin-bottom: 20px; display: none;">
-                <div style="position: relative; display: inline-block;">
-                    <img id="characterImage" src="" alt="Personaje Zombicide"
-                         style="max-width: 300px; max-height: 300px; border-radius: 15px; border: 3px solid #ff6b6b; box-shadow: 0 5px 20px rgba(0,0,0,0.5);">
-                    <div id="imageLoadingSpinner" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none;">
-                        <div style="width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #ff6b6b; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <div id="characterCard" class="character-card">
+                <div class="character-header">
+                    <div class="character-name" id="characterName"></div>
+                    <div class="character-class" id="characterClass"></div>
+                </div>
+
+                <div id="characterImageContainer">
+                    <img id="characterImage" src="" alt="Personaje Zombicide">
+                    <p style="margin-top: 10px; color: #ffd700; font-size: 0.9em;">🎨 Imagen generada por IA</p>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <div class="stat-label">❤️ Vida</div>
+                        <div class="stat-value" id="health"></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">⚔️ Arma Inicial</div>
+                        <div class="stat-value" id="startingWeapon"></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">🎯 Zona Actual</div>
+                        <div class="stat-value" id="rank"></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">⭐ Experiencia</div>
+                        <div class="stat-value" id="experience"></div>
                     </div>
                 </div>
-                <p style="margin-top: 10px; color: #ffd700; font-size: 0.9em;">🎨 Imagen generada por IA</p>
-            </div>
 
-            <div class="stats-container">
-                <div class="stat-box">
-                    <div class="stat-label">🎯 Zona</div>
-                    <div class="stat-value" id="rank"></div>
+                <div id="characterStory" class="character-story" style="margin-bottom: 25px; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; border-left: 4px solid #ff6b6b;">
                 </div>
-                <div class="stat-box">
-                    <div class="stat-label">⭐ Experiencia</div>
-                    <div class="stat-value" id="experience"></div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">❤️ Vida</div>
-                    <div class="stat-value" id="health"></div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">⚔️ Arma Inicial</div>
-                    <div class="stat-value" id="startingWeapon"></div>
+
+                <div class="skills-container">
+                    <div class="skills-title">🛡️ Habilidades</div>
+                    <div class="skills-list" id="skillsList"></div>
                 </div>
             </div>
 
-            <div class="skills-container">
-                <div class="skills-title">🛡️ Habilidades</div>
-                <div class="skills-list" id="skillsList"></div>
+            <!-- My Characters Section -->
+            <div class="my-characters">
+                <h2>📚 Mis Personajes Guardados</h2>
+                <button class="generate-btn" onclick="loadMyCharacters()" style="background: linear-gradient(45deg, #FF9800, #FFB74D); margin-bottom: 20px;">
+                    <span class="btn-icon">🔄</span>
+                    <span class="btn-text">Recargar Personajes</span>
+                </button>
+                <div id="myCharactersList" class="characters-grid"></div>
             </div>
         </div>
     </div>
 
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
-        // Personajes oficiales de Zombicide 2nd Edition
-        const characterNames = [
-            "Jake la Bestia", "Silva la Cazadora", "Ned el Cirujano", "Amy la Atleta",
-            "Wanda la Bruja", "Trent el Constructor", "Phil el Vigilante", "Angie la Azafata",
-            "Doug el Capataz", "Claudia la Vengadora", "Rosa la Militar", "Kevin el Nómada",
-            "Sam el Jardinero", "Brett el Chef", "Nick el Camarero", "Lily la Artista",
-            "Martha la Abuela", "Manny el Mecánico", "Sandra la Enfermera", "Pablo el Boxeador"
+        // Supabase configuration
+        const { createClient } = supabase;
+        const supabaseUrl = 'https://oalakouyyzvazbkedcbm.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hbGFrb3V5eXp2YXpia2VkY2JtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEyNTE5ODksImV4cCI6MjA3NjgyNzk4OX0._b6NEM9FCvHqn9S08ZxzQ8UDBqnsCdLNpHcJSS3elo4';
+        const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+
+        // Global variables
+        let currentUser = null;
+        let currentCharacter = null;
+
+        // INFINITE GENERATIVE SYSTEM - No hay datos fijos, todo se genera proceduralmente
+
+        // First name pools (diverse and international)
+        const firstNames = {
+            male: ["Alex", "Marcus", "Jake", "Carlos", "Ryu", "Dmitri", "Ahmed", "Mateo", "Kai", "Liam", "Noah", "Lucas", "Ethan", "Mason", "Logan", "Oliver", "Elijah", "Aiden", "James", "Benjamin"],
+            female: ["Sarah", "Maya", "Luna", "Sofia", "Yuki", "Anya", "Fatima", "Isabella", "Emma", "Olivia", "Ava", "Sophia", "Mia", "Charlotte", "Amelia", "Harper", "Evelyn", "Abigail", "Emily", "Madison"],
+            neutral: ["Alex", "Taylor", "Jordan", "Casey", "Riley", "Morgan", "Avery", "Quinn", "Sage", "River"]
+        };
+
+        // Last name pools
+        const lastNames = ["Stone", "Rivers", "Chen", "Patel", "Garcia", "Kim", "Foster", "Hayes", "Cooper", "Pierce", "Morgan", "Brooks", "Ward", "Cole", "Gray", "Scott", "Reed", "Fox", "Bell", "Lane"];
+
+        // Archetypes with traits and keywords
+        const archetypes = {
+            "Berserker": { keywords: ["fury", "strength", "rage", "power"], traits: ["muscular", "aggressive", "intimidating"] },
+            "Survivor": { keywords: ["adapt", "endure", "resilience", "instinct"], traits: ["scarred", "weathered", "resourceful"] },
+            "Medic": { keywords: ["heal", "save", "protect", "care"], traits: ["calm", "precise", "empathetic"] },
+            "Runner": { keywords: ["speed", "escape", "quick", "agile"], traits: ["lean", "fast", "nervous"] },
+            "Guardian": { keywords: ["defend", "shield", "guard", "protect"], traits: ["sturdy", "protective", "vigilant"] },
+            "Engineer": { keywords: ["build", "create", "fix", "improvise"], traits: ["practical", "analytical", "detailed"] },
+            "Scout": { keywords: ["explore", "find", "discover", "track"], traits: ["observant", "quiet", "patient"] },
+            "Mystic": { keywords: ["mystery", "intuition", "unseen", "energy"], traits: ["enigmatic", "intense", "spiritual"] },
+            "Avenger": { keywords: ["revenge", "justice", "punish", "avenge"], traits: ["determined", "haunted", "focused"] },
+            "Leader": { keywords: ["command", "guide", "inspire", "coordinate"], traits: ["charismatic", "decisive", "responsible"] }
+        };
+
+        // Professions before apocalypse (100% en español)
+        const professions = [
+            "doctor", "profesor", "ingeniero", "policía", "bombero", "militar", "chef", "artista",
+            "músico", "escritor", "científico", "programador", "mecánico", "constructor", "agricultor",
+            "farmacéutico", "veterinario", "fotógrafo", "periodista", "abogado", "contador", "arquitecto",
+            "piloto", "camionero", "electricista", "fontanero", "peluquero", "barista", "camarero",
+            "entrenador personal", "instructor de yoga", "psicólogo", "trabajador social", "diseñador gráfico",
+            "desarrollador web", "enfermero", "cirujano", "dentista", "técnico veterinario", "técnico de laboratorio",
+            "estudiante universitario", "estudiante de posgrado", "investigador", "catedrático", "bibliotecario", "archivista"
         ];
 
-        const characterArchetypes = [
-            "Survivor", "Fighter", "Runner", "Searcher", "Healer", "Shooter", "Melee", "Looter"
+        // Origin locations (100% en español)
+        const locations = [
+            "centro de la ciudad", "suburbios", "distrito industrial", "hospital", "campus universitario", "centro comercial",
+            "aeropuerto", "estación de tren", "base militar", "instalación de investigación", "cárcel", "estadio",
+            "edificio de apartamentos", "edificio de oficinas", "escuela", "iglesia", "almacén", "fábrica",
+            "estación de gasolina", "restaurante", "hotel", "teatro", "museo", "biblioteca", "parque"
         ];
+
+        // Life events that shaped the character (100% en español)
+        const lifeEvents = [
+            "perdió a su familia en el primer brote",
+            "se separó de su hijo durante la evacuación",
+            "tuvo que matar a su cónyuge infectado",
+            "presenció cómo su mejor amigo se convertía",
+            "fue rescatado de una horda de zombis por extraños",
+            "sobrevivió solo durante meses antes de encontrar a otros",
+            "perdió una extremidad pero aprendió a adaptarse",
+            "formó un pacto con otros sobrevivientes",
+            "fue traicionado por alguien en quien confiaba",
+            "se sacrificó para salvar a otros (pero sobrevivió)",
+            "descubrió que era inmune a la infección",
+            "encontró un arsenal de armas y suministros",
+            "dirigió a un grupo de refugiados hacia la seguridad",
+            "no logró salvar a alguien importante",
+            "fue experimentado por fuerzas desconocidas"
+        ];
+
+        // Physical traits (100% en español)
+        const physicalTraits = {
+            height: ["muy bajo", "bajo", "promedio", "alto", "muy alto"],
+            build: ["delgado", "atlético", "musculoso", "corpulento", "fibroso"],
+            hair: ["corto", "largo", "rapado", "desordenado", "trenzado", "teñido", "canoso"],
+            eyes: ["intensos", "cansados", "determinados", "atormentados", "calculadores", "amables", "fríos"],
+            distinguishing: ["cicatriz en la cara", "manga de tatuajes", "dedo faltante", "extremidad protésica", "color de ojos inusual", "cabello plateado"]
+        };
+
+        // Personality traits (100% en español)
+        const personalityTraits = [
+            "tranquilo y observador", "ruidoso y confiado", "cauteloso y calculador", "impulsivo y valiente",
+            "cínico pero leal", "optimista a pesar de todo", "pragático hasta el extremo", "empático hasta el extremo",
+            "estoico e ilegible", "nervioso pero decidido", "líder carismático natural", "sobreviviente solitario"
+        ];
+
+        // AI-POWERED STORY GENERATION
+        function generateRandomName() {
+            const genderPool = Math.random() > 0.33 ? (Math.random() > 0.5 ? 'male' : 'female') : 'neutral';
+            const first = firstNames[genderPool][Math.floor(Math.random() * firstNames[genderPool].length)];
+            const last = lastNames[Math.floor(Math.random() * lastNames.length)];
+
+            // Sometimes add a nickname
+            if (Math.random() > 0.7) {
+                const nicknames = ["the survivor", "the hunter", "the healer", "the ghost", "the wolf", "the fox", "the bear", "the shadow"];
+                const nickname = nicknames[Math.floor(Math.random() * nicknames.length)];
+                return `${first} "${nickname}" ${last}`;
+            }
+
+            return `${first} ${last}`;
+        }
+
+        // Generate story data for AI
+        function generateStoryData() {
+            const profession = professions[Math.floor(Math.random() * professions.length)];
+            const location = locations[Math.floor(Math.random() * locations.length)];
+            const lifeEvent = lifeEvents[Math.floor(Math.random() * lifeEvents.length)];
+            const personality = personalityTraits[Math.floor(Math.random() * personalityTraits.length)];
+            const age = Math.floor(Math.random() * 40) + 18; // 18-58 years old
+            const survivalTime = Math.floor(Math.random() * 24) + 1; // 1-24 months surviving
+
+            return {
+                profession,
+                location,
+                lifeEvent,
+                personality,
+                age,
+                survivalTime
+            };
+        }
+
+        // Generate story using Hugging Face AI
+        async function generateAIBackstory(characterName, archetype, storyData) {
+            try {
+                const response = await fetch('/api/generate-story', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        characterName,
+                        archetype,
+                        profession: storyData.profession,
+                        location: storyData.location,
+                        lifeEvent: storyData.lifeEvent,
+                        personality: storyData.personality,
+                        age: storyData.age,
+                        survivalTime: storyData.survivalTime
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al generar historia con IA');
+                }
+
+                const data = await response.json();
+                return data.story;
+
+            } catch (error) {
+                console.error('Error generando historia con IA:', error);
+                // Fallback to simple template if AI fails
+                return generateFallbackStory(characterName, archetype, storyData);
+            }
+        }
+
+        // Fallback simple template if AI fails
+        function generateFallbackStory(characterName, archetype, storyData) {
+            return `Antes del apocalipsis, ${characterName} era ${storyData.age} años y trabajaba como ${storyData.profession}. El día que todo cambió, estaba en el ${storyData.location} cuando ${storyData.lifeEvent}. Ahora, después de sobrevivir durante ${storyData.survivalTime} meses en este nuevo mundo, se ha convertido en alguien ${storyData.personality}, usando las habilidades de su vida pasada para enfrentar cada nuevo amanecer entre los muertos vivientes.`;
+        }
+
+        async function generateBackstory(characterName) {
+            const storyData = generateStoryData();
+            return await generateAIBackstory(characterName, "Survivor", storyData);
+        }
+
+        function generatePhysicalDescription() {
+            const height = physicalTraits.height[Math.floor(Math.random() * physicalTraits.height.length)];
+            const build = physicalTraits.build[Math.floor(Math.random() * physicalTraits.build.length)];
+            const hair = physicalTraits.hair[Math.floor(Math.random() * physicalTraits.hair.length)];
+            const eyes = physicalTraits.eyes[Math.floor(Math.random() * physicalTraits.eyes.length)];
+            const distinguishing = physicalTraits.distinguishing[Math.floor(Math.random() * physicalTraits.distinguishing.length)];
+
+            return `Físicamente es ${height} con complexión ${build}, pelo ${hair} y ojos ${eyes}. Su característica más distintiva es ${distinguishing}.`;
+        }
 
         const zones = ["Zona Azul", "Zona Amarilla", "Zona Naranja", "Zona Roja"];
 
-        const skills = {
-            blue: [
-                { name: "+1 Acción", description: "Ganas una acción adicional cada turno", xpRequired: 0 },
-                { name: "+1 Daño", description: "Tus ataques infligen 1 punto de daño extra", xpRequired: 0 },
-                { name: "+1 Movimiento", description: "Puedes moverte 1 casilla adicional", xpRequired: 0 },
-                { name: "Portador de carga +1", description: "Puedes llevar un objeto adicional", xpRequired: 0 },
-                { name: "Habilidoso", description: "Puedes usar dos habilidades diferentes en el mismo turno", xpRequired: 0 },
-                { name: "Luchador", description: "Puedes luchar contra zombis en casillas adyacentes sin gastar acción", xpRequired: 0 }
-            ],
-            yellow: [
-                { name: "Tiro rápido", description: "Con un arma de fuego, puedes hacer un ataque extra", xpRequired: 6 },
-                { name: "Escolta", description: "Los supervivientes en tu zona no pueden ser atacados si están contigo", xpRequired: 6 },
-                { name: "Curandero", description: "Puedes curar 1 punto de daño a otro superviviente", xpRequired: 6 },
-                { name: "Cuchillo de combate", description: "Tu cuchillo causa 2 daños en lugar de 1", xpRequired: 6 },
-                { name: "Pistola de combate", description: "Tu pistola causa 2 daños en lugar de 1", xpRequired: 6 },
-                { name: "Maestro cerrajero", description: "Abres puertas automáticamente", xpRequired: 6 }
-            ],
-            orange: [
-                { name: "Zombi Slayer", description: "Infliges +1 daño contra zombis", xpRequired: 13 },
-                { name: "Barricadas maestras", description: "Tus barricadas tienen 3 puntos de vida", xpRequired: 13 },
-                { name: "Tiro a la cabeza", description: "Si obtienes 6 en un ataque, infliges 1 punto de daño extra", xpRequired: 13 },
-                { name: "Recargar y disparar", description: "Puedes recargar armas como acción gratuita", xpRequired: 13 },
-                { name: "Experto en demolición", description: "Duplicas el daño contra objetivos destructibles", xpRequired: 13 },
-                { name: "Inmunidad total", description: "Eres inmune a todos los efectos negativos", xpRequired: 13 }
-            ],
-            red: [
-                { name: "Líder", description: "Los supervivientes en tu zona ganan +1 acción", xpRequired: 21 },
-                { name: "Tirador experto", description: "Ignoras penalizadores por distancia", xpRequired: 21 },
-                { name: "Héroe local", description: "Todas tus estadísticas aumentan en +1", xpRequired: 21 },
-                { name: "Maestro superviviente", description: "Cuando mueras, regresas con tu experiencia completa", xpRequired: 21 },
-                { name: "Explosivo", description: "Tus ataques afectan a todas las casillas adyacentes", xpRequired: 21 },
-                { name: "Leyenda", description: "Ganas una acción adicional y +1 en todas las estadísticas", xpRequired: 21 }
-            ]
-        };
-
-        // Armas iniciales de cartas grises (Zombicide 2nd Edition)
-        const startingWeapons = [
-            { name: "Pistola", damage: 1, slots: 1, range: 1, type: "rango" },
-            { name: "Cuchillo", damage: 1, slots: 1, range: "Cuerpo a cuerpo", type: "cuerpo a cuerpo" },
-            { name: "Bate de Béisbol", damage: 2, slots: 1, range: "Cuerpo a cuerpo", type: "cuerpo a cuerpo" },
-            { name: "Maza", damage: 1, slots: 1, range: "Cuerpo a cuerpo", type: "cuerpo a cuerpo" },
-            { name: "Llave Inglesa", damage: 1, slots: 1, range: "Cuerpo a cuerpo", type: "herramienta", special: "Abre puertas automáticamente" }
+        // Special skills that can be unlocked at random levels
+        const specialSkills = [
+            // Early game special skills (usable from level 1)
+            {
+                name: "Sexto Sentido",
+                description: "Puedes detectar zombis en habitaciones adyacentes antes de abrirlas",
+                type: "early",
+                levelUnlock: Math.floor(Math.random() * 43) + 1
+            },
+            {
+                name: "Adaptación Urbana",
+                description: "Ignoras penalties por terreno difícil y puedes moverte a través de escombros",
+                type: "early",
+                levelUnlock: Math.floor(Math.random() * 43) + 1
+            },
+            {
+                name: "Sobreviviente Nato",
+                description: "Comienzas con un objeto adicional aleatorio y +1 punto de vida",
+                type: "early",
+                levelUnlock: Math.floor(Math.random() * 43) + 1
+            },
+            {
+                name: "Conexiones Ocultas",
+                description: "Conoces atajos secretos en la ciudad que te permiten moverte más rápido",
+                type: "early",
+                levelUnlock: Math.floor(Math.random() * 43) + 1
+            },
+            {
+                name: "Resistencia Inmunológica",
+                description: "Tienes 50% de resistencia a infecciones zombi y venenos",
+                type: "early",
+                levelUnlock: Math.floor(Math.random() * 43) + 1
+            },
+            // End game special skills (unlocked at max level)
+            {
+                name: "Último Recurso",
+                description: "Al llegar a nivel máximo, puedes sacrificar 1 punto de vida para realizar 3 acciones adicionales este turno",
+                type: "end",
+                levelUnlock: 43
+            },
+            {
+                name: "Leyenda de la Supervivencia",
+                description: "En nivel máximo, todos los aliados en tu zona ganan +1 a todos sus tests",
+                type: "end",
+                levelUnlock: 43
+            },
+            {
+                name: "Maestro Zombicida",
+                description: "En nivel máximo, puedes usar cualquier habilidad de cualquier zona sin restricciones",
+                type: "end",
+                levelUnlock: 43
+            },
+            {
+                name: "Esperanza Final",
+                description: "En nivel máximo, si mueres, puedes revivir con 1 punto de vida una vez por partida",
+                type: "end",
+                levelUnlock: 43
+            },
+            {
+                name: "Juicio Final",
+                description: "En nivel máximo, una vez por partida puedes eliminar automáticamente a todos los zombis en tu zona",
+                type: "end",
+                levelUnlock: 43
+            }
         ];
 
-        // Armas del juego completo (para referencias futuras)
-        const allWeapons = {
-            melee: [
-                { name: "Bate de Béisbol", damage: 2, slots: 1, range: "Cuerpo a cuerpo" },
-                { name: "Hacha", damage: 2, slots: 1, range: "Cuerpo a cuerpo" },
-                { name: "Maza", damage: 1, slots: 1, range: "Cuerpo a cuerpo" },
-                { name: "Katana", damage: 3, slots: 1, range: "Cuerpo a cuerpo" },
-                { name: "Machete", damage: 2, slots: 1, range: "Cuerpo a cuerpo" }
+        // ZOMBICIDE 2E SKILL SYSTEM (Faithful to the original game)
+
+        // Official skills from Zombicide 2nd Edition
+        const officialSkills = {
+            // Blue Zone Skills (Basic)
+            blue: [
+                { name: "+1 Acción", description: "Ganas una acción adicional cada turno" },
+                { name: "+1 Daño", description: "Tus ataques infligen 1 punto de daño extra" },
+                { name: "+1 Movimiento", description: "Puedes moverte 1 casilla adicional" },
+                { name: "+1 Portador de carga", description: "Puedes llevar un objeto adicional" },
+                { name: "Habilidoso", description: "Puedes usar dos habilidades diferentes en el mismo turno" },
+                { name: "Luchador", description: "Puedes luchar contra zombis en casillas adyacentes sin gastar acción" }
             ],
-            ranged: [
-                { name: "Pistola", damage: 1, slots: 1, range: 1 },
-                { name: "Escopeta", damage: 2, slots: 2, range: 0 },
-                { name: "Rifle de Caza", damage: 2, slots: 2, range: "∞" },
-                { name: "Ametralladora", damage: 3, slots: 2, range: "∞" },
-                { name: "Lanzallamas", damage: 1, slots: 2, range: 1, special: "Área de efecto" }
+            // Yellow Zone Skills (Intermediate)
+            yellow: [
+                { name: "Tiro rápido", description: "Con un arma de fuego, puedes hacer un ataque extra" },
+                { name: "Escolta", description: "Los supervivientes en tu zona no pueden ser atacados si están contigo" },
+                { name: "Curandero", description: "Puedes curar 1 punto de daño a otro superviviente" },
+                { name: "Cuchillo de combate", description: "Tu cuchillo causa 2 daños en lugar de 1" },
+                { name: "Pistola de combate", description: "Tu pistola causa 2 daños en lugar de 1" },
+                { name: "Maestro cerrajero", description: "Abres puertas automáticamente" },
+                { name: "Resistente", description: "Ignoras el primer punto de daño que recibas cada turno" },
+                { name: "Ataque simultáneo", description: "Puedes luchar contra todos los zombis en casillas adyacentes" }
+            ],
+            // Orange Zone Skills (Advanced)
+            orange: [
+                { name: "Francotirador", description: "Con rifles, puedes atacar objetivos en línea de visión sin importar la distancia" },
+                { name: "Lanzagranadas", description: "Puedes usar lanzagranadas, afectando a múltiples objetivos" },
+                { name: "Bárbaro", description: "Con armas cuerpo a cuerpo, infliges 2 daños extra" },
+                { name: "Ninja", description: "Puedes moverte a través de casillas ocupadas por zombis" },
+                { name: "Médico de combate", description: "Puedes curar 2 puntos de daño por turno" },
+                { name: "Experto en explosivos", description: "El daño de explosivos se duplica cuando estás en la zona" },
+                { name: "Defensor", description: "Otros supervivientes pueden usar tu defensa cuando estén contigo" },
+                { name: "Buscador experto", description: "Puedes buscar sin gastar una acción" }
+            ],
+            // Red Zone Skills (Master)
+            red: [
+                { name: "Dios de la guerra", description: "Puedes realizar una acción de combate adicional cada turno" },
+                { name: "Maestro de todas las armas", description: "Ignoras penalizadores de armas no especializadas" },
+                { name: "Líder nato", description: "Todos los supervivientes en tu zona ganan +1 acción" },
+                { name: "Inmortal", description: "Solo puedes ser eliminado si recibes 6 daños en un solo turno" },
+                { name: "Exterminador", description: "Las armas automáticas no necesitan recarga cuando estás en la zona" },
+                { name: "Leyenda viviente", description: "Al inicio de tu turno, elige una habilidad de cualquier zona" },
+                { name: "Superviviente definitivo", description: "Nunca recibes más de 3 daños en un solo turno" },
+                { name: "Maestro zombicida", description: "Puedes usar cualquier habilidad del juego sin restricciones" }
             ]
         };
 
-        function getRandomElement(array) {
-            return array[Math.floor(Math.random() * array.length)];
-        }
+        // Combinatorial system that creates variations while maintaining game balance
+        function generateSkillVariation(baseSkill, zone) {
+            const variations = [
+                // Keep original skill
+                { name: baseSkill.name, description: baseSkill.description },
+                // Create thematic variations
+                { name: `${baseSkill.name} mejorado`, description: `${baseSkill.description} con mejoras significativas` },
+                { name: `${baseSkill.name} avanzado`, description: `${baseSkill.description} con aplicación más eficiente` }
+            ];
 
-        function getRandomStartingWeapon() {
-            return getRandomElement(startingWeapons);
-        }
-
-        function generateCharacter() {
-            const name = getRandomElement(characterNames);
-            const archetype = getRandomElement(characterArchetypes);
-            const zoneIndex = Math.floor(Math.random() * zones.length);
-            const zone = zones[zoneIndex];
-
-            // Estadísticas base según Zombicide 2nd Edition
-            let health = 3;
-            let experience = 0;
-            let allCharacterSkills = [];
-
-            // Generar habilidades para todas las zonas (simulación de carta de personaje completa)
-            const blueSkill = { ...getRandomElement(skills.blue), zone: 'blue', zoneName: 'Azul', unlocked: true };
-            const yellowSkill = { ...getRandomElement(skills.yellow), zone: 'yellow', zoneName: 'Amarillo', unlocked: false };
-            const orangeSkill = { ...getRandomElement(skills.orange), zone: 'orange', zoneName: 'Naranja', unlocked: false };
-            const redSkill = { ...getRandomElement(skills.red), zone: 'red', zoneName: 'Rojo', unlocked: false };
-
-            switch(zoneIndex) {
-                case 0: // Zona Azul
-                    health = 3;
-                    experience = 0;
-                    blueSkill.unlocked = true;
-                    allCharacterSkills = [blueSkill, yellowSkill, orangeSkill, redSkill];
-                    break;
-                case 1: // Zona Amarilla
-                    health = 4;
-                    experience = 6;
-                    blueSkill.unlocked = true;
-                    yellowSkill.unlocked = true;
-                    allCharacterSkills = [blueSkill, yellowSkill, orangeSkill, redSkill];
-                    break;
-                case 2: // Zona Naranja
-                    health = 4;
-                    experience = 13;
-                    blueSkill.unlocked = true;
-                    yellowSkill.unlocked = true;
-                    orangeSkill.unlocked = true;
-                    allCharacterSkills = [blueSkill, yellowSkill, orangeSkill, redSkill];
-                    break;
-                case 3: // Zona Roja
-                    health = 5;
-                    experience = 21;
-                    blueSkill.unlocked = true;
-                    yellowSkill.unlocked = true;
-                    orangeSkill.unlocked = true;
-                    redSkill.unlocked = true;
-                    allCharacterSkills = [blueSkill, yellowSkill, orangeSkill, redSkill];
-                    break;
+            // Add zone-specific modifiers for variety
+            if (zone === "yellow") {
+                variations.push({
+                    name: `${baseSkill.name} táctico`,
+                    description: `${baseSkill.description} con ventaja estratégica adicional`
+                });
+            } else if (zone === "orange") {
+                variations.push({
+                    name: `${baseSkill.name} experto`,
+                    description: `${baseSkill.description} con maestría completa`
+                });
+            } else if (zone === "red") {
+                variations.push({
+                    name: `${baseSkill.name} legendario`,
+                    description: `${baseSkill.description} con efectos dominantes`
+                });
             }
 
-            const startingWeapon = getRandomStartingWeapon();
+            return variations[Math.floor(Math.random() * variations.length)];
+        }
 
-            // Actualizar interfaz
-            document.getElementById('characterName').textContent = name;
-            document.getElementById('characterClass').textContent = `${archetype} - ${zone}`;
-            document.getElementById('rank').textContent = zone;
-            document.getElementById('experience').textContent = `${experience} XP`;
-            document.getElementById('health').textContent = `${health} HP`;
-            document.getElementById('startingWeapon').textContent = `${startingWeapon.name} (${startingWeapon.damage} daño, ${startingWeapon.slots} espacios, Alcance: ${startingWeapon.range}${startingWeapon.special ? ', ' + startingWeapon.special : ''})`;
+        // Generate expanded skill pools maintaining game balance
+        function generateSkillsForZone(zone) {
+            const baseSkills = officialSkills[zone];
+            const expandedSkills = [];
+
+            // Add all original skills
+            baseSkills.forEach(skill => expandedSkills.push(skill));
+
+            // Add variations for infinite combinations
+            for (let i = 0; i < 10; i++) { // Add 10 variations per zone
+                const randomBaseSkill = baseSkills[Math.floor(Math.random() * baseSkills.length)];
+                expandedSkills.push(generateSkillVariation(randomBaseSkill, zone));
+            }
+
+            return expandedSkills;
+        }
+
+        const skills = {
+            blue: generateSkillsForZone("blue"),
+            yellow: generateSkillsForZone("yellow"),
+            orange: generateSkillsForZone("orange"),
+            red: generateSkillsForZone("red")
+        };
+
+        const startingWeapons = [
+            "Cuchillo", "Pistola", "Bate de béisbol", "Machete", "Pistola de duplicación",
+            "Hacha", "Crowbar", "Sartén", "Tubo de metal", "Rastrillo"
+        ];
+
+        // Authentication functions
+        function switchTab(tab) {
+            const loginTab = document.querySelector('.auth-tab');
+            const registerTab = document.querySelectorAll('.auth-tab')[1];
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+
+            if (tab === 'login') {
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+            } else {
+                registerTab.classList.add('active');
+                loginTab.classList.remove('active');
+                registerForm.classList.add('active');
+                loginForm.classList.remove('active');
+            }
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) throw error;
+
+                currentUser = data.user;
+                showMainContent();
+                showApiStatus('Sesión iniciada correctamente', 'success');
+            } catch (error) {
+                showApiStatus('Error al iniciar sesión: ' + error.message, 'error');
+            }
+        }
+
+        async function handleRegister(event) {
+            event.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            try {
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            username: username
+                        }
+                    }
+                });
+
+                if (error) throw error;
+
+                showApiStatus('Cuenta creada exitosamente. Por favor, revisa tu email para confirmar.', 'success');
+                // Switch to login tab after successful registration
+                setTimeout(() => switchTab('login'), 2000);
+            } catch (error) {
+                showApiStatus('Error al crear cuenta: ' + error.message, 'error');
+            }
+        }
+
+        async function handleLogout() {
+            try {
+                const { error } = await supabaseClient.auth.signOut();
+                if (error) throw error;
+
+                currentUser = null;
+                hideMainContent();
+                showApiStatus('Sesión cerrada correctamente', 'success');
+            } catch (error) {
+                showApiStatus('Error al cerrar sesión: ' + error.message, 'error');
+            }
+        }
+
+        function showMainContent() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'flex';
+            document.getElementById('mainContent').classList.add('active');
+            document.getElementById('userEmail').textContent = currentUser.email;
+
+            // Load saved characters
+            loadMyCharacters();
+        }
+
+        function hideMainContent() {
+            document.getElementById('authSection').style.display = 'block';
+            document.getElementById('userInfo').style.display = 'none';
+            document.getElementById('mainContent').classList.remove('active');
+        }
+
+        // Check if user is already logged in
+        async function checkAuthState() {
+            try {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (user) {
+                    currentUser = user;
+                    showMainContent();
+                }
+            } catch (error) {
+                console.error('Error checking auth state:', error);
+            }
+        }
+
+        // INFINITE CHARACTER GENERATION WITH AI STORIES
+        async function generateCharacter() {
+            // Show loading state
+            const generateBtn = event.target;
+            const originalText = generateBtn.innerHTML;
+            generateBtn.innerHTML = '<span class="loading-spinner"></span> Generando personaje con IA...';
+            generateBtn.disabled = true;
+
+            try {
+                // Generate unique character with procedural system
+                const name = generateRandomName();
+                const archetypeKeys = Object.keys(archetypes);
+                const selectedArchetype = archetypeKeys[Math.floor(Math.random() * archetypeKeys.length)];
+                const archetypeData = archetypes[selectedArchetype];
+
+                const rank = zones[Math.floor(Math.random() * zones.length)];
+                const experience = Math.floor(Math.random() * 43);
+                const health = Math.floor(Math.random() * 3) + 4;
+                const startingWeapon = startingWeapons[Math.floor(Math.random() * startingWeapons.length)];
+
+                // Generate dynamic backstory with AI
+                const story = await generateBackstory(name);
+                const physicalDesc = generatePhysicalDescription();
+
+                // Enhanced story with physical description
+                const fullStory = `${story} ${physicalDesc}`;
+
+                // Generate ALL 7 skills for every character
+                const characterSkills = [];
+
+                // 1 skill from Blue zone (mandatory)
+                const blueSkill = skills.blue[Math.floor(Math.random() * skills.blue.length)];
+                characterSkills.push({
+                    ...blueSkill,
+                    unlockColor: "blue",
+                    isChoice: false
+                });
+
+                // 1 skill from Yellow zone (mandatory)
+                const yellowSkill = skills.yellow[Math.floor(Math.random() * skills.yellow.length)];
+                characterSkills.push({
+                    ...yellowSkill,
+                    unlockColor: "yellow",
+                    isChoice: false
+                });
+
+                // 2 skills from Orange zone (choose 1)
+                const orangeSkills = [...skills.orange].sort(() => Math.random() - 0.5).slice(0, 2);
+                orangeSkills.forEach(skill => {
+                    characterSkills.push({
+                        ...skill,
+                        unlockColor: "orange",
+                        isChoice: true,
+                        choiceText: "Elige una de las 2 opciones"
+                    });
+                });
+
+                // 3 skills from Red zone (choose 1)
+                const redSkills = [...skills.red].sort(() => Math.random() - 0.5).slice(0, 3);
+                redSkills.forEach(skill => {
+                    characterSkills.push({
+                        ...skill,
+                        unlockColor: "red",
+                        isChoice: true,
+                        choiceText: "Elige una de las 3 opciones"
+                    });
+                });
+
+                // Select special skill (randomly choose early or end game)
+                const specialType = Math.random() > 0.5 ? "early" : "end";
+                const availableSpecialSkills = specialSkills.filter(skill => skill.type === specialType);
+                const selectedSpecialSkill = availableSpecialSkills[Math.floor(Math.random() * availableSpecialSkills.length)];
+
+                characterSkills.push({
+                    ...selectedSpecialSkill,
+                    unlockColor: specialType === "early" ? "purple" : "gold",
+                    isChoice: false,
+                    isSpecial: true,
+                    levelUnlock: selectedSpecialSkill.levelUnlock
+                });
+
+                currentCharacter = {
+                    name,
+                    archetype: selectedArchetype,
+                    story: fullStory,
+                    rank,
+                    experience,
+                    health,
+                    startingWeapon,
+                    skills: characterSkills
+                };
+
+                displayCharacter(currentCharacter);
+
+                // Generar imagen automáticamente para todos los personajes
+                setTimeout(() => generateCharacterImage(), 500);
+
+            } catch (error) {
+                console.error('Error generating character:', error);
+                showApiStatus('Error al generar personaje. Inténtalo de nuevo.', 'error');
+            } finally {
+                // Restore button state
+                generateBtn.innerHTML = originalText;
+                generateBtn.disabled = false;
+            }
+        }
+
+        function getSkillsByZone(rank) {
+            switch (rank) {
+                case "Zona Azul":
+                    return skills.blue;
+                case "Zona Amarilla":
+                    return [...skills.blue, ...skills.yellow];
+                case "Zona Naranja":
+                    return [...skills.blue, ...skills.yellow, ...skills.orange];
+                case "Zona Roja":
+                    return [...skills.blue, ...skills.yellow, ...skills.orange, ...skills.red];
+                default:
+                    return skills.blue;
+            }
+        }
+
+        function displayCharacter(character) {
+            document.getElementById('characterName').textContent = character.name;
+            document.getElementById('characterClass').textContent = character.archetype;
+
+            // Remove rank and experience from main display, show in zone info section
+            document.getElementById('health').textContent = `${character.health} ❤️`;
+            document.getElementById('startingWeapon').textContent = character.startingWeapon;
+
+            // Display character story
+            const storyElement = document.getElementById('characterStory');
+            if (storyElement) {
+                storyElement.innerHTML = `
+                    <h3>📖 Historia del Personaje</h3>
+                    <p style="font-style: italic; line-height: 1.6; color: #e0e0e0;">${character.story}</p>
+                `;
+            }
 
             const skillsList = document.getElementById('skillsList');
             skillsList.innerHTML = '';
 
-            // Mostrar habilidades progresivas como en Zombicide
-            allCharacterSkills.forEach(skill => {
+            character.skills.forEach(skill => {
                 const skillElement = document.createElement('div');
                 skillElement.className = 'skill-item';
 
-                // Color y estilo según zona
-                let zoneColor = '#4169E1'; // Azul
-                let bgColor = 'rgba(65, 105, 225, 0.1)'; // Azul transparente
+                // Determinar el color para el indicador
+                let colorClass = '';
+                let colorText = '';
+                let colorBorder = '';
 
-                if (skill.zone === 'yellow') {
-                    zoneColor = '#FFD700';
-                    bgColor = 'rgba(255, 215, 0, 0.1)';
-                } else if (skill.zone === 'orange') {
-                    zoneColor = '#FF8C00';
-                    bgColor = 'rgba(255, 140, 0, 0.1)';
-                } else if (skill.zone === 'red') {
-                    zoneColor = '#DC143C';
-                    bgColor = 'rgba(220, 20, 60, 0.1)';
+                switch(skill.unlockColor) {
+                    case 'blue':
+                        colorClass = 'skill-blue';
+                        colorText = '🔵 Zona Azul';
+                        colorBorder = '#2196F3';
+                        break;
+                    case 'yellow':
+                        colorClass = 'skill-yellow';
+                        colorText = '🟡 Zona Amarilla';
+                        colorBorder = '#FFC107';
+                        break;
+                    case 'orange':
+                        colorClass = 'skill-orange';
+                        colorText = '🟠 Zona Naranja';
+                        colorBorder = '#FF9800';
+                        break;
+                    case 'red':
+                        colorClass = 'skill-red';
+                        colorText = '🔴 Zona Roja';
+                        colorBorder = '#f44336';
+                        break;
+                    case 'purple':
+                        colorClass = 'skill-purple';
+                        colorText = '🟣 Habilidad Especial (Inicio)';
+                        colorBorder = '#9C27B0';
+                        break;
+                    case 'gold':
+                        colorClass = 'skill-gold';
+                        colorText = '🏆 Habilidad Especial (Final)';
+                        colorBorder = '#FFD700';
+                        break;
                 }
 
-                // Aplicar estilos
-                skillElement.style.borderLeft = `4px solid ${zoneColor}`;
-                skillElement.style.background = skill.unlocked ? bgColor : 'rgba(128, 128, 128, 0.05)';
-                skillElement.style.opacity = skill.unlocked ? '1' : '0.6';
+                skillElement.style.borderLeftColor = colorBorder;
+
+                let choiceText = '';
+                if (skill.isChoice) {
+                    choiceText = `<div class="skill-choice">💡 ${skill.choiceText}</div>`;
+                }
+
+                let specialText = '';
+                if (skill.isSpecial) {
+                    specialText = `<div class="skill-special">✨ Se desbloquea en nivel ${skill.levelUnlock}</div>`;
+                }
 
                 skillElement.innerHTML = `
-                    <div class="skill-name">
-                        <span style="color: ${zoneColor};">●</span> ${skill.name}
-                        <span style="float: right; font-size: 0.8em; color: ${zoneColor}; font-weight: bold;">
-                            ${skill.zoneName} (${skill.xpRequired} XP)
-                        </span>
+                    <div class="skill-header">
+                        <div class="skill-name">${skill.name}</div>
+                        <div class="skill-zone ${colorClass}">${colorText}</div>
                     </div>
                     <div class="skill-description">${skill.description}</div>
-                    <div style="margin-top: 8px; font-size: 0.8em; font-weight: bold; ${
-                        skill.unlocked ? 'color: #4CAF50;' : 'color: #888;'
-                    }">
-                        ${skill.unlocked ? '✅ DESBLOQUEADA' : '🔒 Requiere ' + skill.xpRequired + ' XP'}
-                    </div>
+                    ${choiceText}
+                    ${specialText}
                 `;
                 skillsList.appendChild(skillElement);
             });
@@ -458,253 +1462,44 @@
             document.getElementById('characterCard').style.display = 'block';
         }
 
-        // Función para guardar personaje como JSON
-        function saveCharacter() {
-            const characterData = {
-                name: document.getElementById('characterName').textContent,
-                class: document.getElementById('characterClass').textContent,
-                zone: document.getElementById('rank').textContent,
-                experience: document.getElementById('experience').textContent,
-                health: document.getElementById('health').textContent,
-                startingWeapon: document.getElementById('startingWeapon').textContent,
-                skills: Array.from(document.querySelectorAll('.skill-item')).map(skill => ({
-                    name: skill.querySelector('.skill-name').textContent,
-                    description: skill.querySelector('.skill-description').textContent
-                })),
-                generatedDate: new Date().toLocaleString('es-ES')
-            };
-
-            const dataStr = JSON.stringify(characterData, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-
-            const exportFileDefaultName = `${characterData.name.replace(/ /g, '_')}_Zombicide.json`;
-
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
-        }
-
-        // Función para imprimir personaje
-        function printCharacter() {
-            const characterName = document.getElementById('characterName').textContent;
-            const printStyles = `
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
-                    .character-header {
-                        display: flex;
-                        justify-content: space-between;
-                        border-bottom: 2px solid #333;
-                        padding-bottom: 15px;
-                        margin-bottom: 20px;
-                    }
-                    .character-name { font-size: 1.8em; font-weight: bold; color: #333; }
-                    .character-class { font-size: 1.2em; color: #666; background: #f0f0f0; padding: 5px 15px; border-radius: 20px; }
-                    .stats-container {
-                        display: grid;
-                        grid-template-columns: repeat(2, 1fr);
-                        gap: 15px;
-                        margin-bottom: 25px;
-                    }
-                    .stat-box {
-                        background: #f9f9f9;
-                        padding: 15px;
-                        border: 1px solid #ddd;
-                        border-radius: 8px;
-                    }
-                    .stat-label { font-weight: bold; color: #333; margin-bottom: 5px; }
-                    .stat-value { font-size: 1.1em; color: #666; }
-                    .skills-title { font-size: 1.3em; color: #333; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
-                    .skill-item {
-                        background: #f5f5f5;
-                        padding: 12px;
-                        margin-bottom: 10px;
-                        border-left: 3px solid #666;
-                        border-radius: 5px;
-                    }
-                    .skill-name { font-weight: bold; color: #333; }
-                    .skill-description { color: #666; font-size: 0.9em; margin-top: 5px; }
-                    .footer {
-                        margin-top: 30px;
-                        text-align: center;
-                        font-size: 0.9em;
-                        color: #666;
-                        border-top: 1px solid #ddd;
-                        padding-top: 20px;
-                    }
-                </style>
-            `;
-
-            const characterSkills = Array.from(document.querySelectorAll('.skill-item')).map(skill => `
-                <div class="skill-item">
-                    <div class="skill-name">${skill.querySelector('.skill-name').textContent}</div>
-                    <div class="skill-description">${skill.querySelector('.skill-description').textContent}</div>
-                </div>
-            `).join('');
-
-            const printHtml = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Personaje Zombicide - ${characterName}</title>
-                    ${printStyles}
-                </head>
-                <body>
-                    <h1>🧟 Personaje Zombicide 2nd Edition 🧟</h1>
-                    <div class="character-header">
-                        <div class="character-name">${characterName}</div>
-                        <div class="character-class">${document.getElementById('characterClass').textContent}</div>
-                    </div>
-                    <div class="stats-container">
-                        <div class="stat-box">
-                            <div class="stat-label">🎯 Zona</div>
-                            <div class="stat-value">${document.getElementById('rank').textContent}</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">⭐ Experiencia</div>
-                            <div class="stat-value">${document.getElementById('experience').textContent}</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">❤️ Vida</div>
-                            <div class="stat-value">${document.getElementById('health').textContent}</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">⚔️ Arma Inicial</div>
-                            <div class="stat-value">${document.getElementById('startingWeapon').textContent}</div>
-                        </div>
-                    </div>
-                    <div class="skills-container">
-                        <div class="skills-title">🛡️ Habilidades</div>
-                        ${characterSkills}
-                    </div>
-                    <div class="footer">
-                        <p>Generado el: ${new Date().toLocaleString('es-ES')}</p>
-                        <p>Zombicide 2nd Edition - Generador de Personajes</p>
-                    </div>
-                </body>
-                </html>
-            `;
-
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(printHtml);
-            printWindow.document.close();
-            printWindow.print();
-        }
-
-        // Funciones para la API de generación de imágenes
-        let currentCharacterData = {};
-
-        function saveApiKey() {
-            const apiKey = document.getElementById('apiKey').value;
-            if (apiKey) {
-                localStorage.setItem('replicateApiKey', apiKey);
-                showApiStatus('✅ API Key guardada correctamente', 'success');
-                document.getElementById('apiKey').value = '';
-            } else {
-                showApiStatus('❌ Por favor ingresa una API Key válida', 'error');
-            }
-        }
-
-        function setApiKeyDirectly(apiKey) {
-            localStorage.setItem('replicateApiKey', apiKey);
-            showApiStatus('✅ API Key integrada correctamente', 'success');
-        }
-
-        function saveAutoGeneratePreference() {
-            const checkbox = document.getElementById('autoGenerateImage');
-            localStorage.setItem('autoGenerateImage', checkbox.checked);
-        }
-
-        function getAutoGeneratePreference() {
-            const saved = localStorage.getItem('autoGenerateImage');
-            return saved !== null ? saved === 'true' : true; // Por defecto true
-        }
-
-        function getApiKey() {
-            return localStorage.getItem('replicateApiKey');
-        }
-
-        function showApiStatus(message, type) {
-            const statusDiv = document.getElementById('apiStatus');
-            statusDiv.className = `api-status api-${type}`;
-            statusDiv.textContent = message;
-
-            setTimeout(() => {
-                statusDiv.textContent = '';
-                statusDiv.className = '';
-            }, 5000);
-        }
-
-        function generateCharacterImage() {
-            const apiKey = getApiKey();
-
-            if (!apiKey) {
-                showApiStatus('❌ Por favor configura tu API Key primero', 'error');
+        // Image generation functions
+        async function generateCharacterImage() {
+            if (!currentCharacter) {
+                showApiStatus('Por favor, genera un personaje primero', 'error');
                 return;
             }
 
-            if (!currentCharacterData.name) {
-                showApiStatus('❌ Por favor genera un personaje primero', 'error');
-                return;
-            }
+            // API key configurada en el servidor - no requiere configuración del usuario
 
-            const imageContainer = document.getElementById('characterImageContainer');
-            const loadingSpinner = document.getElementById('imageLoadingSpinner');
-            const characterImage = document.getElementById('characterImage');
+            // Randomized elements for infinite variety
+            const gender = Math.random() > 0.5 ? 'male' : 'female';
+            const clothing = ['torn jacket', 'police vest', 'medical coat', 'punk outfit', 'leather jacket', 'torn coat', 'combat armor', 'hoodie'][Math.floor(Math.random() * 8)];
+            const weapon = ['shotgun', 'chainsaw', 'katana', 'rifle', 'pistol', 'machete', 'baseball bat', 'crowbar'][Math.floor(Math.random() * 8)];
+            const expression = ['determined', 'angry', 'focused', 'heroic', 'fearful', 'intense'][Math.floor(Math.random() * 6)];
 
-            // Mostrar loading
-            imageContainer.style.display = 'block';
-            loadingSpinner.style.display = 'block';
-            characterImage.style.display = 'none';
-            showApiStatus('🎨 Generando imagen... esto puede tardar 30-60 segundos', 'loading');
+            const prompt = `A gritty post-apocalyptic survivor character from the board game Zombicide, drawn in the official Zombicide card art style. Semi-realistic comic book illustration, bold black outlines, expressive face, dynamic pose, cinematic lighting, realistic proportions, worn clothing with post-apocalyptic elements, dirty textures, scratches, blood stains, high contrast, desaturated color palette, strong shading, professional digital painting, concept art style, western comic aesthetic, artstation trending, dramatic atmosphere, waist-up portrait, plain or textured background, "Zombicide artwork", "board game character card art", "realistic comic art"
 
-            // Crear prompt detallado para el personaje
-            const prompt = createDetailedPrompt(currentCharacterData);
+            A ${gender} survivor wearing a ${clothing}, holding a ${weapon}, with a ${expression} expression, illustrated in the official Zombicide card art style, semi-realistic comic illustration, cinematic lighting, desaturated tones, gritty atmosphere, "board game survivor illustration", "Zombicide artwork"
 
-            // Llamar a la API de Replicate
-            callReplicateAPI(apiKey, prompt);
-        }
+            Character: ${currentCharacter.name}, Archetype: ${currentCharacter.archetype}, from Zombicide board game, ${currentCharacter.rank} difficulty`;
 
-        function createDetailedPrompt(character) {
-            const weaponName = character.startingWeapon.split('(')[0].trim();
-            const gender = determineGender(character.name);
-            const archetype = character.archetype.toLowerCase();
+            document.getElementById('characterImageContainer').style.display = 'block';
+            document.getElementById('characterImage').style.display = 'none';
 
-            return `${character.name}, ${archetype} survivor, realistic post-apocalyptic character portrait,
-            gritty detailed artwork, zombie apocalypse survivor, weathered face, determined expression,
-            wearing practical scavenged clothes and makeshift armor, tactical gear, holding ${weaponName},
-            dark post-apocalyptic background, realistic lighting, detailed textures, high contrast,
-            game character concept art, realistic proportions, detailed facial features,
-            post-apocalyptic aesthetic, survivor look, cinematic game art, detailed illustration,
-            realistic but stylized, game-ready character design, end of the world atmosphere`;
-        }
+            // Show loading spinner
+            const loadingSpinner = document.createElement('div');
+            loadingSpinner.className = 'loading-spinner';
+            loadingSpinner.id = 'imageLoadingSpinner';
+            document.getElementById('characterImageContainer').appendChild(loadingSpinner);
 
-        function determineGender(name) {
-            const femaleNames = ['Silva', 'Amy', 'Wanda', 'Angie', 'Claudia', 'Rosa', 'Lily', 'Martha', 'Sandra'];
-            const nameParts = name.split(' ')[0];
-            return femaleNames.includes(nameParts) ? 'female' : 'male';
-        }
-
-        async function callReplicateAPI(apiKey, prompt) {
             try {
-                const response = await fetch('https://api.replicate.com/v1/predictions', {
+                // Start prediction
+                const response = await fetch('/api/generate-image', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Token ${apiKey}`,
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        version: "ac732df83cea7fff18b8472768c88ad041fa750ff7682a21affe81863cbe77e4", // Stable Diffusion XL
-                        input: {
-                            prompt: prompt,
-                            width: 512,
-                            height: 768,
-                            num_outputs: 1,
-                            num_inference_steps: 25,
-                            guidance_scale: 8.0,
-                            negative_prompt: "cartoon, anime, manga, disney, pixar, 3d render, video game, cgi, overly smooth, plastic, toy-like, childish, colorful, bright, cheerful, clean, perfect, pristine, cartoonish, animated, game graphics, polygonal, low poly, toy, figurine, chibi, kawaii, cute"
-                        }
-                    })
+                    body: JSON.stringify({ prompt: prompt })
                 });
 
                 const prediction = await response.json();
@@ -714,117 +1509,203 @@
                 }
 
                 // Poll for completion
-                pollForCompletion(apiKey, prediction.id);
+                await pollForImageCompletion(prediction.id);
 
             } catch (error) {
-                console.error('Error calling Replicate API:', error);
-                showApiStatus(`❌ Error: ${error.message}`, 'error');
-                document.getElementById('imageLoadingSpinner').style.display = 'none';
+                document.getElementById('characterImageContainer').style.display = 'none';
+                showApiStatus('Error al generar imagen: ' + error.message, 'error');
             }
         }
 
-        async function pollForCompletion(apiKey, predictionId) {
-            const maxAttempts = 60; // 5 minutes max
+        async function pollForImageCompletion(predictionId) {
+            const maxAttempts = 60;
             let attempts = 0;
 
             const poll = async () => {
                 attempts++;
 
                 try {
-                    const response = await fetch(`https://api.replicate.com/v1/predictions/${predictionId}`, {
-                        headers: {
-                            'Authorization': `Token ${apiKey}`,
-                        }
-                    });
+                    const response = await fetch(`/api/check-prediction?id=${predictionId}`);
+                    const data = await response.json();
 
-                    const prediction = await response.json();
-
-                    if (prediction.status === 'succeeded') {
-                        displayGeneratedImage(prediction.output[0]);
-                        showApiStatus('✅ ¡Imagen generada con éxito!', 'success');
-                    } else if (prediction.status === 'failed') {
-                        throw new Error('La generación de la imagen falló');
-                    } else if (prediction.status === 'processing' && attempts < maxAttempts) {
+                    if (data.status === 'succeeded' && data.output && data.output.length > 0) {
+                        // Image is ready
+                        document.getElementById('imageLoadingSpinner').remove();
+                        document.getElementById('characterImage').src = data.output[0];
+                        document.getElementById('characterImage').style.display = 'block';
+                        showApiStatus('Imagen generada exitosamente', 'success');
+                    } else if (data.status === 'failed') {
+                        throw new Error(data.error || 'La generación de imagen falló');
+                    } else if (attempts < maxAttempts) {
                         // Still processing, continue polling
-                        setTimeout(poll, 2000); // Check every 2 seconds
+                        setTimeout(poll, 2000);
                     } else {
-                        throw new Error('Tiempo de espera agotado');
+                        throw new Error('Tiempo de espera agotado para la generación de imagen');
                     }
                 } catch (error) {
-                    console.error('Error polling:', error);
-                    showApiStatus(`❌ Error: ${error.message}`, 'error');
-                    document.getElementById('imageLoadingSpinner').style.display = 'none';
+                    document.getElementById('imageLoadingSpinner').remove();
+                    document.getElementById('characterImageContainer').style.display = 'none';
+                    showApiStatus('Error: ' + error.message, 'error');
                 }
             };
 
             poll();
         }
 
-        function displayGeneratedImage(imageUrl) {
-            const characterImage = document.getElementById('characterImage');
-            const loadingSpinner = document.getElementById('imageLoadingSpinner');
+        // Save character functions
+        async function saveCharacter() {
+            if (!currentCharacter) {
+                showApiStatus('Por favor, genera un personaje primero', 'error');
+                return;
+            }
 
-            characterImage.src = imageUrl;
-            characterImage.onload = function() {
-                loadingSpinner.style.display = 'none';
-                characterImage.style.display = 'block';
-            };
+            if (!currentUser) {
+                showApiStatus('Por favor, inicia sesión para guardar personajes', 'error');
+                return;
+            }
 
-            characterImage.onerror = function() {
-                loadingSpinner.style.display = 'none';
-                showApiStatus('❌ Error al cargar la imagen generada', 'error');
-            };
+            try {
+                const imageUrl = document.getElementById('characterImage').src || null;
+
+                const { data, error } = await supabaseClient
+                    .from('characters')
+                    .insert({
+                        user_id: currentUser.id,
+                        character_data: currentCharacter,
+                        image_url: imageUrl,
+                        created_at: new Date().toISOString()
+                    })
+                    .select();
+
+                if (error) throw error;
+
+                showApiStatus('Personaje guardado exitosamente', 'success');
+                loadMyCharacters();
+            } catch (error) {
+                showApiStatus('Error al guardar personaje: ' + error.message, 'error');
+            }
         }
 
-        // Modificar generateCharacter para guardar los datos y generar imagen automáticamente
-        const originalGenerateCharacter = generateCharacter;
-        generateCharacter = function() {
-            originalGenerateCharacter();
-
-            // Guardar datos del personaje actual
-            currentCharacterData = {
-                name: document.getElementById('characterName').textContent,
-                archetype: document.getElementById('characterClass').textContent.split(' - ')[0],
-                zone: document.getElementById('characterClass').textContent.split(' - ')[1],
-                startingWeapon: document.getElementById('startingWeapon').textContent
-            };
-
-            // Ocultar imagen anterior al generar nuevo personaje
-            document.getElementById('characterImageContainer').style.display = 'none';
-
-            // Generar imagen automáticamente si está activado y hay API key
-            const autoGenerate = getAutoGeneratePreference();
-            const apiKey = getApiKey();
-
-            if (autoGenerate && apiKey) {
-                // Pequeño delay para asegurar que el personaje se muestre primero
-                setTimeout(() => {
-                    generateCharacterImage();
-                }, 500);
-            } else if (autoGenerate && !apiKey) {
-                showApiStatus('🎨 Generación automática activada pero necesita API Key', 'error');
-            }
-        };
-
-        // Generar personaje al cargar la página
-        window.onload = function() {
-            // Integrar API Key directamente
-            const apiKey = 'r8_0IuxFzqWiZM7g0txeBIAt1UfU0Q3nqS2WrqqJ';
-            setApiKeyDirectly(apiKey);
-
-            // Cargar preferencias guardadas
-            const autoGeneratePref = getAutoGeneratePreference();
-            document.getElementById('autoGenerateImage').checked = autoGeneratePref;
-
-            // Mostrar estado de la API key
-            showApiStatus('✅ API Key integrada automáticamente', 'success');
-            if (autoGeneratePref) {
-                showApiStatus('🎨 Generación automática de imágenes activada', 'success');
+        async function loadMyCharacters() {
+            if (!currentUser) {
+                showApiStatus('Por favor, inicia sesión para ver tus personajes', 'error');
+                return;
             }
 
-            // Generar primer personaje
-            generateCharacter();
-        };
+            try {
+                const { data, error } = await supabaseClient
+                    .from('characters')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                displayMyCharacters(data || []);
+            } catch (error) {
+                showApiStatus('Error al cargar personajes: ' + error.message, 'error');
+            }
+        }
+
+        function displayMyCharacters(characters) {
+            const container = document.getElementById('myCharactersList');
+            container.innerHTML = '';
+
+            if (characters.length === 0) {
+                container.innerHTML = '<div class="no-characters">No tienes personajes guardados aún. ¡Genera y guarda tu primer personaje!</div>';
+                return;
+            }
+
+            characters.forEach(character => {
+                const characterElement = document.createElement('div');
+                characterElement.className = 'saved-character';
+
+                const charData = character.character_data;
+
+                characterElement.innerHTML = `
+                    <div class="saved-character-header">
+                        <div class="saved-character-name">${charData.name}</div>
+                        <button class="delete-btn" onclick="deleteCharacter('${character.id}')">Eliminar</button>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <strong>Clase:</strong> ${charData.archetype} - ${charData.rank}<br>
+                        <strong>Vida:</strong> ${charData.health} ❤️ |
+                        <strong>Experiencia:</strong> ${charData.experience} XP<br>
+                        <strong>Arma:</strong> ${charData.startingWeapon}
+                    </div>
+                    ${character.image_url ? `<img src="${character.image_url}" style="max-width: 100px; border-radius: 8px; margin-bottom: 10px;" alt="${charData.name}">` : ''}
+                    <div style="margin-top: 10px;">
+                        <strong>Habilidades:</strong>
+                        <ul style="margin: 5px 0; padding-left: 20px;">
+                            ${charData.skills.map(skill => `<li style="margin-bottom: 3px; font-size: 0.9em;">${skill.name}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+
+                container.appendChild(characterElement);
+            });
+        }
+
+        async function deleteCharacter(characterId) {
+            if (!confirm('¿Estás seguro de que quieres eliminar este personaje?')) {
+                return;
+            }
+
+            try {
+                const { error } = await supabaseClient
+                    .from('characters')
+                    .delete()
+                    .eq('id', characterId)
+                    .eq('user_id', currentUser.id);
+
+                if (error) throw error;
+
+                showApiStatus('Personaje eliminado exitosamente', 'success');
+                loadMyCharacters();
+            } catch (error) {
+                showApiStatus('Error al eliminar personaje: ' + error.message, 'error');
+            }
+        }
+
+        // Print character function
+        function printCharacter() {
+            if (!currentCharacter) {
+                showApiStatus('Por favor, genera un personaje primero', 'error');
+                return;
+            }
+
+            window.print();
+        }
+
+        // Las funciones de configuración API ya no son necesarias - todo está configurado en el servidor
+
+        // Status message function
+        function showApiStatus(message, type) {
+            const statusDiv = document.getElementById('apiStatus');
+            statusDiv.className = `api-status api-${type}`;
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthState();
+        });
+
+        // Listen for auth state changes
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN' && session.user) {
+                currentUser = session.user;
+                showMainContent();
+            } else if (event === 'SIGNED_OUT') {
+                currentUser = null;
+                hideMainContent();
+            }
+        });
     </script>
 </body>
 </html>
