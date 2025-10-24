@@ -1,0 +1,19 @@
+{
+  "name": "zombicide-character-generator",
+  "version": "1.0.0",
+  "description": "Generador de personajes Zombicide 2nd Edition con IA",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build needed for static site'",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0"
+  },
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  },
+  "keywords": ["zombicide", "character generator", "ai", "stable diffusion"],
+  "author": "Tu Nombre",
+  "license": "MIT"
+}
