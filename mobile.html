@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Personajes Zombicide - Móvil</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1b1b 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 15px;
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.85);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid #ff4444;
+            box-shadow: 0 0 25px rgba(255,68,68,0.4);
+        }
+        h1 {
+            text-align: center;
+            color: #ff4444;
+            margin-bottom: 15px;
+            font-size: 22px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        .generate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #ff4444, #cc0000);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,68,68,0.3);
+        }
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255,68,68,0.5);
+        }
+        .generate-btn:active {
+            transform: translateY(-1px);
+        }
+        .generate-btn:disabled {
+            background: linear-gradient(45deg, #666, #444);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .character-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(255,68,68,0.3);
+            backdrop-filter: blur(10px);
+        }
+        .character-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff4444;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            padding: 10px;
+            background: rgba(255,68,68,0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(255,68,68,0.5);
+        }
+        .character-info {
+            margin: 15px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .character-info strong {
+            color: #ff6666;
+            display: inline-block;
+            min-width: 100px;
+            margin-right: 5px;
+        }
+        .character-info span {
+            color: #fff;
+        }
+        .skills-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255,68,68,0.3);
+        }
+        .skills-section strong {
+            color: #ff6666;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .skill-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255,68,68,0.3), rgba(255,68,68,0.1));
+            border: 1px solid #ff4444;
+            border-radius: 20px;
+            padding: 6px 12px;
+            margin: 4px 2px;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .skill-badge:hover {
+            background: linear-gradient(135deg, rgba(255,68,68,0.5), rgba(255,68,68,0.2));
+            transform: scale(1.05);
+        }
+        .story-section {
+            background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-style: italic;
+            font-size: 13px;
+            line-height: 1.6;
+            border: 1px solid rgba(255,68,68,0.2);
+            position: relative;
+        }
+        .story-section::before {
+            content: """;
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            font-size: 30px;
+            color: rgba(255,68,68,0.3);
+            font-style: normal;
+        }
+        .loading {
+            text-align: center;
+            color: #ff6666;
+            font-style: italic;
+            font-size: 16px;
+            padding: 20px;
+        }
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ff4444;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error {
+            color: #ff6666;
+            text-align: center;
+            padding: 15px;
+            background: rgba(255,0,0,0.1);
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid rgba(255,68,68,0.3);
+        }
+        .notice {
+            background: linear-gradient(135deg, rgba(255,255,0,0.15), rgba(255,255,0,0.05));
+            border: 1px solid #ffcc00;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #ffcc00;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(255,204,0,0.2);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 11px;
+            color: #888;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+        .footer a {
+            color: #ff6666;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .footer a:hover {
+            color: #ff8888;
+            text-decoration: underline;
+        }
+        .hidden { display: none; }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .zombie-icon {
+            font-size: 30px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span class="zombie-icon">🧟</span>Generador Zombicide 2e</h1>
+
+        <div class="notice">
+            ⚠️ Versión móvil optimizada sin autenticación<br>
+            🎲 Generación ilimitada de personajes únicos
+        </div>
+
+        <button class="generate-btn" onclick="generateCharacter()">
+            🎲 Generar Nuevo Personaje
+        </button>
+
+        <div id="character-display" class="hidden">
+            <div class="character-card fade-in">
+                <div class="character-name" id="character-name"></div>
+
+                <div class="character-info">
+                    <div><strong>Arquetipo:</strong> <span id="character-archetype"></span></div>
+                    <div><strong>Edad:</strong> <span id="character-age"></span> años</div>
+                    <div><strong>Profesión:</strong> <span id="character-profession"></span></div>
+                    <div><strong>Personalidad:</strong> <span id="character-personality"></span></div>
+                    <div><strong>Supervivencia:</strong> <span id="character-survival"></span> meses</div>
+                </div>
+
+                <div class="skills-section">
+                    <strong>⚔️ Habilidades Zombicide:</strong>
+                    <div id="character-skills"></div>
+                </div>
+
+                <div class="story-section" id="character-story"></div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading hidden">Generando personaje único...</div>
+        <div id="error" class="error hidden"></div>
+
+        <div class="footer">
+            <strong>Generador de Personajes Zombicide 2nd Edition</strong><br>
+            📱 Versión móvil • Sin límites de generación<br>
+            <a href="https://zombicide-web-app.vercel.app" target="_blank">🔄 Versión completa con IA</a>
+        </div>
+    </div>
+
+    <script>
+        // Arrays expandidos en español para generación infinita
+        const professions = [
+            "Médico de emergencias", "Chef gourmet", "Ingeniero civil", "Profesor de química",
+            "Policía", "Bombero", "Mecánico", "Soldado", "Paramédico", "Farmacéutico",
+            "Electricista", "Fontanero", "Arquitecto", "Programador", "Constructor",
+            "Camarero", "Taxista", "Repartidor", "Seguridad privada", "Personal de limpieza",
+            "Dentista", "Veterinario", "Profesor", "Abogado", "Contable", "Diseñador gráfico",
+            "Fotógrafo", "Periodista", "Traductor", "Psicólogo", "Nutricionista", "Entrenador personal",
+            "Piloto", "Marinero", "Agricultor", "Ganadero", "Pescador", "Cazador", "Forestal",
+            "Geólogo", "Meteorólogo", "Astrónomo", "Biólogo", "Físico", "Matemático", "Estadístico"
+        ];
+
+        const locations = [
+            "Madrid", "Barcelona", "Valencia", "Sevilla", "Bilbao", "Málaga", "Murcia",
+            "Palma", "Las Palmas", "Zaragoza", "A Coruña", "Vitoria", "Granada",
+            "Tenerife", "Córdoba", "Valladolid", "Vigo", "Gijón", "Hospitalet", "Alicante",
+            "Móstoles", "La Coruña", "Santa Cruz de Tenerife", "Sabadell", "Jerez de la Frontera",
+            "Parla", "Alcalá de Henares", "San Sebastián", "Albacete", "Getafe", "Elche",
+            "Badalona", "Cartagena", "Terrassa", "Almería", "Marbella", "Fuenlabrada",
+            "Las Rozas", "San Cristóbal de la Laguna", "Alcobendas", "Logroño", "Santander",
+            "San Fernando", "Cornellá de Llobregat", "Mataró", "Alcorcón", "Rubí"
+        ];
+
+        const physicalTraits = [
+            "Alto y delgado", "Bajo y robusto", "Complexión atlética", "Contextura fuerte",
+            "Estructura mediana", "Físico musculoso", "Delgado pero resistente",
+            "Robusto y poderoso", "Ágil y ligero", "Fuerte y compacto",
+            "Elegante y distinguido", "Rudo y trabajador", "Ágil y flexible", "Impresionante y amenazante",
+            "Joven y enérgico", "Maduro y experimentado", "Vigoroso y saludable", "Cansado pero resiliente"
+        ];
+
+        const personalityTraits = [
+            "Valiente y protector", "Cauteloso y observador", "Optimista y resiliente",
+            "Pragmático y racional", "Impulsivo y decidido", "Compasivo y solidario",
+            "Líder natural", "Solitario y autosuficiente", "Estratégico y calculador",
+            "Temerario y audaz", "Paciente y metódico", "Creativo e ingenioso",
+            "Leal y confiable", "Sarcástico y divertido", "Inteligente y analítico",
+            "Empático y comprensivo", "Determinado y persistente", "Adaptable y versátil"
+        ];
+
+        const lifeEvents = [
+            "Perdió a su familia en el primer brote", "Escapó de un hospital colapsado",
+            "Sobrevivió a una mordedura por pura suerte", "Formó una comunidad de supervivientes",
+            "Fue traicionado por sus aliados más cercanos", "Rescató a extraños de una horda",
+            "Descubrió una cura parcial que no funcionó", "Perdió su refugio tras un ataque masivo",
+            "Encontró un arsenal militar abandonado", "Cruzó el país a pie buscando seguridad",
+            "Sobrevivió al invierno sin recursos", "Presenció el nacimiento del primer bebé post-apocalipsis",
+            "Lideró la defensa de su ciudad", "Fue el último de su grupo en sobrevivir",
+            "Encontró refugio en un lugar imposible", "Perdió a su mejor amigo protector",
+            "Tuvo que tomar decisiones imposibles", "Descubrió una fuente de agua limpia"
+        ];
+
+        const maleNames = [
+            "Alejandro", "Carlos", "Miguel", "Javier", "Luis", "Sergio", "Raúl", "Pablo",
+            "Daniel", "David", "Jorge", "Juan", "Antonio", "Francisco", "Manuel", "Pedro",
+            "José", "Ángel", "Juan Carlos", "Rafael", "Jesús", "Andrés", "Fernando", "Diego"
+        ];
+
+        const femaleNames = [
+            "Ana", "María", "Carmen", "Laura", "Sofía", "Lucía", "Elena", "Isabel",
+            "Marta", "Cristina", "Paula", "Valeria", "Daniela", "Sara", "Claudia", "Nora",
+            "Emma", "Olivia", "Valentina", "Julia", "Camila", "Isabella", "Victoria", "Ariadna"
+        ];
+
+        const surnames = [
+            "García", "Rodríguez", "López", "Martínez", "Sánchez", "Pérez", "Gómez", "Díaz",
+            "Fernández", "Jiménez", "Muñoz", "Álvarez", "Moreno", "Muñoz", "Ruiz", "Hernández",
+            "Díez", "Sanchez", "Garrido", "Cortés", "Vargas", "Castro", "Ortiz", "Rubio"
+        ];
+
+        const nicknames = {
+            male: ["El Lobo", "El León", "El Tigre", "El Águila", "El Oso", "El Zorro", "El Halcón", "El Jaguar",
+                   "El Guerrero", "El Cazador", "El Protector", "El Sobreviviente", "El Estratega", "El Audaz",
+                   "El Resistente", "El Rápido", "El Fuerte", "El Silencioso", "El Vigilante", "El Defensor"],
+            female: ["La Pantera", "La Leona", "La Tigresa", "La Águila", "La Loba", "La Zorra", "La Halcón", "La Jaguar",
+                     "La Guerrera", "La Cazadora", "La Protectora", "La Sobreviviente", "La Estratega", "La Audaz",
+                     "La Resistente", "La Rápida", "La Fuerte", "La Silenciosa", "La Vigilante", "La Defensora"]
+        };
+
+        const archetypes = {
+            blue: { name: "Novato", skills: 1, color: "#4A90E2", description: "Recién llegado al mundo de los muertos" },
+            yellow: { name: "Superviviente", skills: 2, color: "#FFD700", description: "Ha aprendido a defenderse" },
+            orange: { name: "Experto", skills: 4, color: "#FF8C00", description: "Veterano de incontables batallas" },
+            red: { name: "Legendario", skills: 7, color: "#DC143C", description: "Leyenda viviente del apocalipsis" }
+        };
+
+        const skills = {
+            blue: ["+1 Acción", "Movimiento +1", "Carga pesada", "Buscador", "Ingenioso", "Alerta", "Rápido"],
+            yellow: ["+1 Dado de combate", "Esquiva", "Carrera", "Puntería", "Luchador", "Resistente", "Ágil"],
+            orange: ["+1 Acción", "Ataque adicional", "Defensa", "Combate cercano", "Tiro rápido", "Maestro armas", "Táctico"],
+            red: ["Maestro combate", "Experto armas", "Líder", "Estratega", "Superviviente", "Legendario", "Indestructible"]
+        };
+
+        function generateRandomName() {
+            const isMale = Math.random() > 0.5;
+            const firstNames = isMale ? maleNames : femaleNames;
+            const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const surname = surnames[Math.floor(Math.random() * surnames.length)];
+            const nicknameList = isMale ? nicknames.male : nicknames.female;
+            const nickname = nicknameList[Math.floor(Math.random() * nicknameList.length)];
+            return `${firstName} "${nickname}" ${surname}`;
+        }
+
+        function generateUniquePersonaje() {
+            const name = generateRandomName();
+            const archetypeKeys = Object.keys(archetypes);
+            const archetypeType = archetypeKeys[Math.floor(Math.random() * archetypeKeys.length)];
+            const archetype = archetypes[archetypeType];
+            const age = Math.floor(Math.random() * 40) + 18;
+            const profession = professions[Math.floor(Math.random() * professions.length)];
+            const location = locations[Math.floor(Math.random() * locations.length)];
+            const personality = personalityTraits[Math.floor(Math.random() * personalityTraits.length)];
+            const physical = physicalTraits[Math.floor(Math.random() * physicalTraits.length)];
+            const lifeEvent = lifeEvents[Math.floor(Math.random() * lifeEvents.length)];
+            const survivalTime = Math.floor(Math.random() * 36) + 1;
+
+            // Generar habilidades únicas según el arquetipo
+            const characterSkills = [];
+            const totalSkills = archetype.skills;
+            const skillLevels = ["blue", "yellow", "orange", "red"];
+
+            for (let i = 0; i < totalSkills; i++) {
+                const levelIndex = Math.min(Math.floor(i / 2), skillLevels.length - 1);
+                const level = skillLevels[levelIndex];
+                const levelSkills = skills[level];
+                const availableSkills = levelSkills.filter(skill => !characterSkills.includes(skill));
+
+                if (availableSkills.length > 0) {
+                    const skill = availableSkills[Math.floor(Math.random() * availableSkills.length)];
+                    characterSkills.push(skill);
+                }
+            }
+
+            // Generar historia coherente
+            const firstName = name.split(" ")[0];
+            const story = `Antes del apocalipsis, ${name} era un ${profession.toLowerCase()} de ${age} años viviendo en ${location}. Físicamente era ${physical.toLowerCase()} y su personalidad se caracterizaba por ser ${personality.toLowerCase()}.
+
+Cuando todo comenzó, ${lifeEvent.toLowerCase()}. Este evento traumático forjó su determinación de sobrevivir a toda costa. Han pasado ${survivalTime} meses desde que el mundo se derrumbó, y ${firstName} se ha convertido en un ${archetype.name.toLowerCase()}, habiendo aprendido a adaptarse y usar su experiencia como ${profession.toLowerCase()} para navegar este nuevo mundo infestado de muertos vivientes.`;
+
+            return {
+                name,
+                archetype: archetype.name,
+                age,
+                profession,
+                location,
+                personality,
+                physical,
+                lifeEvent,
+                survivalTime,
+                skills: characterSkills,
+                story,
+                archetypeColor: archetype.color
+            };
+        }
+
+        function generateCharacter() {
+            const btn = document.querySelector('.generate-btn');
+            const display = document.getElementById('character-display');
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+
+            btn.disabled = true;
+            display.classList.add('hidden');
+            error.classList.add('hidden');
+            loading.classList.remove('hidden');
+
+            try {
+                setTimeout(() => {
+                    const character = generateUniquePersonaje();
+
+                    // Animar la aparición del personaje
+                    display.innerHTML = `
+                        <div class="character-card fade-in">
+                            <div class="character-name" style="color: ${character.archetypeColor}; border-color: ${character.archetypeColor};">
+                                ${character.name}
+                            </div>
+
+                            <div class="character-info">
+                                <div><strong>Arquetipo:</strong> <span>${character.archetype}</span></div>
+                                <div><strong>Edad:</strong> <span>${character.age} años</span></div>
+                                <div><strong>Profesión:</strong> <span>${character.profession}</span></div>
+                                <div><strong>Personalidad:</strong> <span>${character.personality}</span></div>
+                                <div><strong>Supervivencia:</strong> <span>${character.survivalTime} meses</span></div>
+                            </div>
+
+                            <div class="skills-section">
+                                <strong>⚔️ Habilidades Zombicide:</strong>
+                                <div>
+                                    ${character.skills.map(skill =>
+                                        `<span class="skill-badge">${skill}</span>`
+                                    ).join('')}
+                                </div>
+                            </div>
+
+                            <div class="story-section">
+                                ${character.story}
+                            </div>
+                        </div>
+                    `;
+
+                    loading.classList.add('hidden');
+                    display.classList.remove('hidden');
+                    btn.disabled = false;
+                }, 1200);
+            } catch (err) {
+                loading.classList.add('hidden');
+                error.textContent = 'Error: ' + err.message;
+                error.classList.remove('hidden');
+                btn.disabled = false;
+            }
+        }
+
+        // Auto-generar primer personaje al cargar
+        window.addEventListener('load', () => {
+            setTimeout(generateCharacter, 500);
+        });
+    </script>
+</body>
+</html>

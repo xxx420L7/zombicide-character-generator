@@ -1,0 +1,267 @@
+Zombicide Skills List
+
+A full list of all the Skills from Modern, Fantasy and Sci-Fi Zombicide, along with some created by myself and others. 
+
+Where a Skill has evolved/changed over games, I have chosen the one that I prefer (eg: Born Leader).
+
+Some Skills are listed more than once under different names (eg: Swordmaster/Blademaster).
+
+Some Skills are just Fantasy versions of Modern Skills (eg: Gunslinger/Bowslinger/Spellslinger), as such they are listed in the Official Skills.
+
+Some of the official Skills have Fan Additions that I feel make them more useful. These additions are marked as such.
+
+Note: The +1 Free [Action] Action has a few unofficial Fan Additions: Dog, Reorganise, Trade that I thought should be added.
+
+Official Skills
+
++1 Action - The Survivor has an extra Action he may use as he pleases.
+
++1 Damage: [Action] - The Survivor gets a +1 Damage bonus with Actions of the specified type (Combat, Magic, Melee, or Ranged).
+
++1 Damage with [Equipment] - The Survivor gets a +1 Damage bonus with the specified Equipment.
+
++1 die: [Action] - Each of the Survivor's weapons roll an extra die with Actions of the specified type (Combat, Magic, Melee, or Ranged). Dual weapons each gain a die, for a total of +2 dice per Dual Action of the specified type.
+
++1 free [Action] Action - The Survivor has 1 extra free Action of the specified type (Combat, Dog, Magic, Melee, Move, Ranged, Reorganise, Search, or Trade). This Action may only be used to perform an Action of the specified type.
+
++1 to dice roll: [Action] - The Survivor adds 1 to the result of each die he rolls in Actions of the specified type (Combat, Magic, Melee, or Ranged). The maximum result is always 6.
+
++1 max Range - The Survivor’s Ranged weapons and Combat spells’ maximum Range is increased by 1.
+
++1 Zone per Move - The Survivor can move through one extra Zone each time he performs a Move Action . This Skill stacks with other effects benefiting Move Actions. Entering a Zone containing Zombies ends the Survivor’s Move Action.
+
+1 re-roll per turn - Once per turn, you can re-roll all the dice related to the resolution of an Action made by the Survivor. The new result takes the place of the previous one. This Skill stacks with the effects of Equipment that allow re-rolls.
+
+2 cocktails are better than 1 - The Survivor gets two Molotov cards instead of one when he creates a Molotov.
+
+2 Zones per Move Action -  When the Survivor spends one Action to Move, he can move one or two Zones instead of one. Entering a Zone containing Zombies ends the Survivor’s Move Action.
+
+Ambidextrous - The Survivor treats all Combat Spells, Melee and Ranged weapons as if they had the Dual symbol. 
+Fan Addition: If the Survivor has 2 different weapons of the same type (Combat Spell, Melee, or Ranged) in hand, they can use one weapon to add +1 die to the other weapon (the same way a Dagger will add +1 die to any Melee weapon). The Survivor cannot mix weapon types IE: an axe cannot grant +1 die to a Crossbow or Fireball.
+
+Auto repair – During each End Phase, restore the Survivor’s Armor to its base level.
+
+Barbarian/Predator - When resolving a Melee Action, the Survivor can replace the Dice number of the Melee weapon(s) he uses by the number of Zombies standing in his Zone. Skills affecting the dice value, like +1 die: Melee, still apply.
+
+Battle Rage - The Survivor gains an extra die to roll for subsequent Melee Actions whenever they kill at least 1 Zombie with a Melee Action. The bonus is cumulative if the Survivor gets at least 1 Zombie kill in the subsequent Melee Actions and applies until the end of the Survivor’s Activation.
+
+Blademaster/Swordmaster - The Survivor treats all Melee weapons  as if they had the Dual symbol. 
+Fan Addition: If the Survivor has 2 different Melee weapons  in hand, they can use one Melee weapon to add +1 die to the other Melee weapon (the same way a Dagger will add +1 die to any Melee weapon).
+
+Blitz - Each time your Survivor kills the last Zombie of a Zone, he gets 1 free Move Action to use immediately.
+
+Bloodlust: [Action]
+Spend one Action with the Survivor: He moves up to two Zones to a Zone containing at least one Zombie. He then gains one free Action of the specified type (Combat, Magic, Melee, or Ranged).
+
+Born leader - During the Survivor’s Turn, the Survivor may give 1 free Action to another Survivor to use as they please. This Action is used immediately, then the Born leader Survivor resumes their Turn.
+
+Bowslinger/Gunslinger - The Survivor treats all Ranged weapons as if they had the Dual symbol. 
+Fan Addition: If the Survivor has 2 different Ranged weapons in hand, they can use one Ranged weapon to add +1 die to the other Ranged weapon (the same way a Dagger will add +1 die to any Melee weapon).
+
+Break-in - In order to open doors, the Survivor rolls no dice, and needs no equipment (but still spends an Action to do so) . He doesn’t make Noise while using this Skill. However, other prerequisites still apply (such as taking a designated Objective before a door can be opened). Moreover, the Survivor gains one extra free Action that can only be used to open doors.
+Please note the Break-in Skill doesn’t apply to removing barricades (see Toxic City Mall).
+
+Brother in arms: [game effect] - The Survivor can use this Skill whenever they are standing in the same Zone as at least one other Survivor. As long as Brother in arms is active, each Survivor in the Zone (including the one with this Skill) benefits from the indicated Skill or game effect.
+
+Camouflage/Rotten – The Survivor may earn a Camouflage token at the start of their Turn, if no Xeno has a Line of Sight on them. Place the token next to their base. The Survivor may keep the token (even from a Game Round to the next) until they resolve any kind of Combat or Machine Action, or make Noise. It may be earned again in the same way. As long as they have this token, the Survivor is ignored by all Xenos and is not considered a Noise token. Xenos don’t attack them and will even move past them. Even with the Camouflage token, the Survivor still has to spend extra Actions to move out of a Zone crowded with Xenos
+
+Can start at [Danger Level] - The Survivor can begin the game at the indicated Danger Level (first experience point of the indicated Danger Level). All players have to agree.
+
+Charge - The Survivor can use this Skill for free, as often as he pleases, during each of his Activations: He moves up to two Zones to a Zone containing at least one Zombie (or rival Survivor). Normal Movement rules still apply. Entering a Zone containing Zombies ends the Survivor’s Move Action.
+
+Collector: [Zombie type] - The Survivor doubles the experience gained each time he kills a Zombie of the specified type.
+
+Combat Reflexes - Whenever any Zombies spawn within their Line of Sight, the Survivor may immediately perform a free Combat Action against them. This Skill may be used once per Zombie card drawn.
+
+Concentrated Attack expert – Whenever the Survivor makes a Concentrated Attack with 2 dice (or more), the base Damage value of the weapon gets +1, and there is no Friendly Fire
+
+Death grasp - Don’t discard an Equipment card when the Survivor receives a Wounded card. This Skill is ignored if there’s no space left in the Inventory to receive the Wounded card.
+
+Destiny - The Survivor can use this Skill once per turn when he reveals an Equipment card he drew. Ignore and discard that card, and draw another Equipment card.
+
+Distributor - Using this Skill alters the Spawn step during the Zombies’ Phase. When resolving the Spawn step during the Zombies’ Phase, draw as many Zombie cards as there are Spawn Zones. Assign each of them freely to a Spawn Zone, then spawn Zombies as indicated.
+
+Double Casting - Every time the Survivor performs an Enchantment Action, they can select an extra target for the same Enchantment, for free. First, designate both targets, then resolve one application after the other, in any order. The same Survivor can be targeted twice. User can target themselves.
+
+Dreadnought: [Zombie type] -  The Survivor ignores all Wounds coming from Zombies of the specified type (such as “Walker”, “Runner”, “Zombie Dog”, “Standard”, “Berserker”, etc.).
+
+Dual Expert - The Survivor has a free Combat Action as long as they have Dual weapons equipped. This Action may only be used with the Dual equipped weapons.
+
+Enhanced Senses - The Survivor can trace Line of Sight 1 Zone farther in room Zones.
+
+Escalation: [Action] - The Survivor gains 1 extra die to roll for subsequent Actions of the specified type (Combat, Magic, Melee, or Ranged). The bonus is cumulative and applies until the end of the Survivor’s Turn. The bonus is lost whenever the Survivor performs another kind of Action.
+
+Fast roping - The Survivor knows how to use ropes to get out of a flying helicopter. He can get out of a flying helicopter to get into a street Zone (but not an indoor alley).
+
+Free reload - The Survivor reloads reloadable weapons (Double Barrel, Mac-10, Sawed-Off, etc.) for free.
+
+Frenzy: [Action] - All weapons of the specified type (Combat, Magic, Melee, or Ranged) the Survivor carries gain +1 die per Wound the Survivor suffers. Dual weapons gain a die each, for a total of +2 dice per Wound and per Dual Combat Action.
+
+Full auto/Iron Rain - When resolving a Ranged Action, the Survivor can replace the Dice number of the Ranged weapon(s) he uses by the number of Zombies standing in the targeted Zone. Skills affecting the dice value, like +1 die: Ranged, still apply.
+
+Gunslinger/Bowslinger - The Survivor treats all Ranged weapons as if they had the Dual symbol. 
+Fan Addition: If the Survivor has 2 different Ranged weapons in hand, they can use one Ranged weapon to add +1 die to the other Ranged weapon (the same way a Dagger will add +1 die to any Melee weapon).
+
+Helicopter pilot - The Survivor can pilot a helicopter.
+
+Hit & run - The Survivor can use this Skill for free, just after he resolved Magic, Melee or Ranged Combat Action resulting in at least one Zombie kill. He can then resolve a free Move Action. The Survivor does not spend extra Actions to perform this free Move Action if Zombies are standing in his Zone.
+
+Hoard - The Survivor can carry one extra Equipment card in reserve.
+
+Hold your nose - This Skill can be used once per turn. The Survivor gets a free Search Action in the Zone if he has eliminated a Zombie (even outside a building) the very same turn. This Action may only
+be used to Search and the Survivor can still only Search once per turn.
+
+Iron Hide - The Survivor can make Armor rolls with a 5+ Armor value, even when he does not wear an armor on his Body slot. Wearing an armor, the Survivor adds 1 to the result of each die he rolls for Armor rolls. The maximum result is always 6
+
+Iron Rain/Full auto - When resolving a Ranged Action, the Survivor can replace the Dice number of the Ranged weapon(s) he uses by the number of Zombies standing in the targeted Zone. Skills affecting the dice value, like +1 die: Ranged, still apply.
+
+Is that all you’ve got? - You can use this Skill any time the Survivor is about to take Damage. Negate 1 Damage for each Equipment card you discard from your Survivor's inventory.
+
+Jump/Zero-G run - The Survivor can use this Skill once during each Activation. The Survivor spends one Action: He moves two Zones into a Zone to which he has Line of Sight. Movement related Skills (like +1 Zone per Move Action or Slippery) are ignored, but Movement penalties (like having Zombies in the starting Zone) apply. Ignore all Actors, barricades, and holes in the intervening Zone (see the Angry Neighbors expansion). Any obstacles other than Actors, barricades, and holes in the intervening Zone prevent the use of this Skill.
+
+Lifesaver - The Survivor can use this Skill, for free, once during each of his Activations. Select a Zone containing at least one Zombie at Range 1 from your Survivor. Choose Survivors in the selected Zone to be dragged to your Survivor’s Zone without penalty. This is not a Move Action. A Survivor can decline the rescue and stay in the selected Zone if his controller chooses. Both Zones need to share a clear path. A Survivor can’t cross barricades (see Angry Neighbors and Toxic City Mall), fences, closed doors, holes, or walls. Lifesaver can’t be used by a Survivor in a car, helicopter, or in an observation tower (see Prison Outbreak), nor can it be used to drag Survivors out of a car, helicopter, or an observation tower.
+
+Lock it down - At the cost of one Action, the Survivor can close an open door in his Zone. Opening or destroying it again later does not trigger a new Zombie Spawn.
+
+Loud - Once per turn, the Survivor can make a huge amount of noise! Until this Survivor’s next turn, the Zone he used this Skill in is considered to have the highest number of Noise tokens on the entire
+map. If different Survivors have this Skill, only the last one who used it applies the effects.
+
+Low profile - The Survivor can’t get hit by Survivors’ Magic and Ranged Actions. Ignore him when casting a Combat spell or shooting in the Zone he stands in. Game effects that kill everything in the targeted Zone, like Dragon Fire and Molotov Cocktail, still kill him, though.
+
+Lucky - The Survivor can re-roll once all the dice of each Action he takes. The new result takes the place of the previous one. This Skill stacks with the effects of other Skills (“1 re-roll per turn”,
+for example) and Equipment that allows re-rolls.
+
+Matching Set! - When a Survivor performs a Search Action and draws a weapon card with the Dual symbol , he can immediately take a second card of the same type from the Equipment deck. Shuffle the deck afterward.
+
+Mana Rain - When resolving a Magic Action, the Survivor may substitute the Dice number of the Combat spell(s) he uses with the number of Zombies standing in the targeted Zone. Skills affecting the dice value, like +1 die: Magic, still apply.
+
+Marksman/Sniper - The Survivor may freely choose the targets of all his Magic and Ranged Actions. Misses don’t hit Survivors.
+
+Medic - Once per turn, the Survivor can freely remove one Wounded card from a Survivor in the same Zone. He may also heal himself.
+
+Ninja - The Survivor makes no Noise. At all. His miniature does not count as a Noise token, and his use of Equipment or weapons produces no Noise tokens either! The Survivor may choose not to use this Skill at any time, if he wishes to be noisy.
+
+Point-blank - The Survivor can perform Ranged and Magic Actions in their own Zone, no matter the minimum Range. When resolving a Magic or Ranged Action at Range 0, the Survivor freely chooses the targets and can kill any type of Zombies (including Berserker Zombies). Their Combat spells and Ranged weapons still need to inflict enough Damage to kill the targets. Misses don’t hit Survivors.
+
+Predator/Barbarian - When resolving a Melee Action, the Survivor can replace the Dice number of the Melee weapon(s) he uses by the number of Zombies standing in his Zone. Skills affecting the dice value, like +1 die: Melee, still apply.
+
+Quick Draw/Webbing - All Melee and Ranged weaponry in the Survivor’s inventory is considered equipped in hand. With this Skill, a Survivor could effectively be considered as having several Melee and Ranged cards equipped in Hand. For obvious reasons, he can only use two identical dual Melee or Ranged weapons at any given time. Choose any combination of two before resolving Actions or rolls involving the Survivor.
+
+Reaper: [Action] - Use this Skill when assigning hits while resolving an Action of the specified type (Combat, Magic, Melee, or Ranged). One of these hits can freely kill an additional identical Zombie in the same Zone. Only a single additional Zombie can be killed per Action when using this Skill.
+
+Regeneration - At the end of each game round, heal all Wounds the Survivor received. Regeneration doesn’t work if the Survivor has been eliminated.
+
+Remote control: [Machine] – The Survivor may perform Machine Actions with Machines of the indicated type (Bot, Sentry Gun, or All).
+
+Roll 6: +1 die [Action] - You may roll an additional die for each “6” rolled on an Action of the specified type (Combat, Magic, Melee, or Ranged). Keep on rolling additional dice as long as you keep getting “6”. Game effects that allow re-rolls must be used before rolling any additional dice for this Skill.
+
+Rotten/Camouflage - At the end of his turn, if the Survivor has not taken a Combat Action, driven a car (passengers are not concerned), and has not produced a Noise token, place a Rotten token next to his base. As long as he has this token, he is totally ignored by any and all types of Zombies (except Zombivors) and is not considered a Noise token. Zombies don’t attack him and will even walk past him. The Survivor loses his Rotten token if he takes any Combat Action or makes noise. Even with the Rotten token, the Survivor still has to spend extra Actions to move out of a Zone crowded with Zombies.
+
+Scavenger - The Survivor can Search in any Zone free of Zombies. This includes street Zones, indoor alleys, hospital Zones, helipads, tents, Waterhole Zones, etc.
+
+Search: +1 card - Draw an extra card when Searching with the Survivor.
+
+Search: 2 cards – Draw 2 cards when Searching with the Survivor.
+
+Shove - The Survivor can use this Skill for free, once during each of his turns. Select a Zone at Range 1 from your Survivor. All Zombies standing in your Survivor’s Zone are pushed to the selected Zone. This is not a Movement. Both Zones need to share a clear path: a Zombie can’t cross barricades, fences, closed doors, ramparts, or walls, but can be shoved in or out of a Vault (see Black Plague), a Waterhole Zone, and through a Barrier or Hedge. Shove can’t be used by Survivors in a car.
+
+Slippery/Unstoppable - The Survivor does not spend extra Actions when he performs a Move Action through a Zone where there are Zombies. Entering a Zone containing Zombies ends the Survivor’s Move Action.
+
+Sniper/Marksman - The Survivor may freely choose the targets of all his Magic and Ranged Actions. Misses don’t hit Survivors.
+
+Spellbook - All Combat spells and Enchantments in the Survivor’s Inventory are considered equipped in Hand. With this Skill, a Survivor could effectively be considered as having several Combat spells and Enchantments cards equipped in Hand. For obvious reasons, he can only use two identical dual Combat Spells at any given time. Choose any combination of two before resolving Actions or rolls involving the Survivor.
+
+Spellcaster - The Survivor has one extra free Action. This Action may only be used for a Magic Action or an Enchantment Action.
+
+Spellslinger - The Survivor treats all Combat Spells as if they had the Dual symbol. If the Survivor has 2 different Combat Spells in hand, they can use one Combat Spell to add +1 die to the other Combat Spell (the same way a Dagger will add +1 die to any Melee weapon).
+
+Sprint - The Survivor can use this Skill once during each of his Activations. Spend one Move Action with the Survivor: He may move one, two, or three Zones instead of one. Entering a Zone containing Zombies ends the Survivor’s Move Action.
+
+Super strength - Consider the Damage value of Melee weapons used by the Survivor to be 3.
+
+Starts with [X] Armor Points – The Survivor starts with the indicated amount of Armor Points. This is their base level.
+
+Starts with a [Equipment] - The Survivor begins the game with the indicated Equipment; its card is automatically assigned to him before the beginning of the game.
+
+Steady hand - The Survivor can ignore other Survivors of their choosing when missing with a Magic or Ranged Action, or driving a car through a Zone. The Skill does not apply to game effects killing everything in the targeted Zone (such as a Molotov cocktail or Dragon Fire, for example).
+
+Swordmaster/Blademaster - The Survivor treats all Melee weapons  as if they had the Dual symbol. 
+Fan Addition: If the Survivor has 2 different Melee weapons  in hand, they can use one Melee weapon to add +1 die to the other Melee weapon (the same way a Dagger will add +1 die to any Melee weapon).
+
+Tactician - The Survivor’s turn can be resolved anytime during the Players’ Phase, before or after any other Survivor’s turn.
+
+Taunt - The Survivor can use this Skill for free, once during each of his turns. Select a Zone your Survivor can see. All Zombies standing in the selected Zone immediately gain an extra activation: they try to reach the taunting Survivor by all means available. Taunted Zombies ignore all other Survivors: they do not attack them and cross the Zone they stand in if needed to reach the taunting Survivor.
+
+Tough - The Survivor ignores the first Attack he receives from a single Zombie every Zombies’ Phase.
+
+Toxic immunity - The Survivor is immune to Toxic Blood Spray (see Toxic City Mall).
+
+Transmutation - The Survivor can use this Skill as often as they please, during each of their Turns. Spend an Action and discard an Equipment card from your Inventory: draw a new Equipment card. This is not a Search Action. Aaahh!! cards are resolved as usual.
+
+Trick shot - When the Survivor is equipped with Dual Combat spells or Ranged weapons, he can aim at targets in different Zones with each spell/weapon in the same Action.
+
+Unstoppable/Slippery - The Survivor does not spend extra Actions when he performs a Move Action through a Zone where there are Zombies. Entering a Zone containing Zombies ends the Survivor’s Move Action.
+
+Webbing/Quick Draw - All Melee and Ranged weaponry in the Survivor’s inventory is considered equipped in hand. With this Skill, a Survivor could effectively be considered as having several Melee and Ranged cards equipped in Hand. For obvious reasons, he can only use two identical dual Melee or Ranged weapons at any given time. Choose any combination of two before resolving Actions or rolls involving the Survivor.
+
+Zero-G run/Jump - The Survivor can use this Skill once during each Activation. The Survivor spends one Action: He moves two Zones into a Zone to which he has Line of Sight. Ignore everything in the intervening Zone, except airlocks, walls and closed doors. Movement related Skills (like +1 Zone per Move Action or Unstoppable) are ignored, but Movement penalties (like having Zombies in the starting Zone) apply.
+
+Zombie link - The Survivor plays an extra turn each time an extra activation card is drawn in the Zombie pile. He plays before the extra-activated Zombies. If several Survivors benefit from this Skill at the same time, the players choose their activation order.
+
+Fan Skills
+
+Combine weapons - Combine 2 weapons of the same type into a single weapon. Take the highest Range, Accuracy and Damage, then combine the number of Dice together. Eg combining the Rifle (1-3|1|3+|1) and Shotgun (0-1|2|4+|2) will give you a weapon with (1-3|3|4+|2). Cannot combine 3 Damage weapons. Cannot combine different weapon types (eg: Melee with Ranged).
+
+Concentrate Attack: [Action] - A Survivor performing  an action of the specified type (Combat, Magic, Melee, or Ranged) may concentrate attacks on a single target to increase their chance of eliminating it.
+
+To Concentrate Attack, designate a single specific target among those the Attack may hit, before rolling dice. Multiply the Damage value by the amount of hits obtained.
+
+Combat Spell and Ranged Concentrated Attacks keep the Targeting Priority rules. Misses are dealt among fellow Survivors as Friendly Fire: apply the weapon’s base Damage value (no matter the amount of hits obtained).
+
+Dash - If the Survivor uses all of his Actions in a single turn on Move Actions, he gains +1 Free Move Action to use immediately.
+
+Fate - Once per Action, the Survivor may re-roll a single die of their choosing.
+
+Fix Bayonets! - Hold both a Melee and a Ranged weapon in one hand, freeing the other hand for another weapon/item.
+
+Flare - The Survivor can distract the zombies in any zone range 0-1 until the end of their turn. Allows the Survivor to freely move and search in that zone.
+
+Focus: Accuracy - The Survivor can add 1 to the result of each die he rolls for each extra Action they spend on their next Combat Action. Eg: Betty has 3 Actions total. She can spend 2 Actions to add 1 to the result of a single Combat Action, and have 1 Action left, or she can spend all 3 of her Actions to add 2 to the result of a single Combat Action. The maximum result is always 6.
+
+Focus: Power - The Survivor can add +1 die for each extra Action they spend on their next Combat action. Eg: Betty has 3 Actions total. She can spend 2 Actions to gain +1 die on a single Combat Action, and have 1 Action left, or she can spend all 3 of her Actions to gain +2 dice on a single Combat Action. When dual wielding, each weapon gains the extra die/dice. 
+
+Focus: Range - The Survivor can add +1 to Max Range for each extra Action they spend on their next Ranged or Magic action. Eg: Betty has 3 Actions total. She can spend 2 Actions to gain +1 Max Range on a single a Ranged Action, and have 1 Action left, or she can spend all 3 of her Actions to gain +2 Max Range on a single Ranged Action. This Skill also boosts indoor Line of Sight. 
+
+Fool Me Once - After the first wound taken, the Survivor is immune to all other wounds for that zombie action (Survivor will still be hit by the first Runner’s second Action).
+
+Get Outta Here - After killing an enemy in their zone, the Survivor can Shove another Survivor into any unobstructed adjacent zone.
+
+Grab - Select a single zombie from any adjacent unobstructed zone and pull them into your zone.
+
+Hard or Sharp - The Survivor is able to increase the Power of any of their equipped weapons at the cost of their Accuracy. Increase both the number of dice rolled and accuracy by the same number. Eg Eddie is using a Pistol which uses 1 die and hits on 4+. With this Skill, he can choose to use 2 dice hitting on 5+, or roll 3 dice and hit on 6. The maximum Accuracy is always 6.
+
+Imitate Experience - Once per turn the Survivor can imitate the Experience Level of any other Survivor on the board to use one of their own skills from that Level. (Eg: Thompson has the Imitate Experience Skill in Blue Level and Lifesaver in Orange. If Thompson is in Yellow level and Jameson is in Orange Level, Thompson can use his Imitate Skill to access his Orange Level Lifesaver Skill.)
+
+Imitate Skill - Once per turn the Survivor can imitate the Blue Level Skill of any other active Survivor.
+
+Isolate - Once per turn, the Survivor spends 2 Actions to move into a zone with enemies, grab one of the enemies, and pass through to an adjacent zone. The Survivor then resolves an immediate melee Action.
+
+Noooooo!!! - During the Zombie activation phase if another Survivor at range 0-1 is about to be hit by an enemy, this Survivor gains the Slippery skill for the sole purpose of taking the wound for the other Survivor.
+
+Power Shot: [Action] - Once per turn Actions of the specified type (Combat, Magic, or Ranged) deal Damage to every zone they pass through. Roll for each zone individually. Does not include Melee.
+
+Puppet Master - Once per turn you the Survivor is able to force another Survivor sharing their zone to attack for them. This uses the Master’s Action, not the Puppet’s, and the Master receives all XP.
+
+Rampage - Once per turn, the Survivor spends 2 Actions to move up to 2 zones, ignoring movement penalties, and resolving a Melee action in each zone where there were enemies, including the originating zone.
+
+Retribution - Whenever the Survivor receives a wound, that Damage is immediately dealt to his attacker. The Survivor still receives the original Damage.
+
+The Power of Many: [Action] - The Survivor gains +1 die: [Action] for each additional Survivor sharing their zone.
+
+Throw - The Survivor may throw any Melee weapon into an adjacent zone, range 1-1, into which they have LoS for a guaranteed kill. The weapon Damage must be equal to or exceed the Damage required to kill the enemy. The weapon is then discarded. The Survivor may not throw their last remaining weapon. Ranged target priority is in effect.
+
+Trading Places - Swap zones with an adjacent Survivor or enemy. Ignore movement penalties.
+
+Voodoo - The Survivor inflicts a wound on themselves in order to inflict a wound on any single enemy in LoS. In order to kill a 2 wound enemy (eg: a Fatty), the Survivor will need to inflict 2 wounds on themselves. An Abomination will require 3 wounds.
+
+Warpath - If the Survivor completes 3 successful Combat actions in a row, they gain +1 Free Combat action to use immediately.
