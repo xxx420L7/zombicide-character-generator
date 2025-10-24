@@ -966,71 +966,8 @@
 
         const zones = ["Zona Azul", "Zona Amarilla", "Zona Naranja", "Zona Roja"];
 
-        // Special skills that can be unlocked at random levels
-        const specialSkills = [
-            // Early game special skills (usable from level 1)
-            {
-                name: "Sexto Sentido",
-                description: "Puedes detectar zombis en habitaciones adyacentes antes de abrirlas",
-                type: "early",
-                levelUnlock: Math.floor(Math.random() * 43) + 1
-            },
-            {
-                name: "Adaptación Urbana",
-                description: "Ignoras penalties por terreno difícil y puedes moverte a través de escombros",
-                type: "early",
-                levelUnlock: Math.floor(Math.random() * 43) + 1
-            },
-            {
-                name: "Sobreviviente Nato",
-                description: "Comienzas con un objeto adicional aleatorio y +1 punto de vida",
-                type: "early",
-                levelUnlock: Math.floor(Math.random() * 43) + 1
-            },
-            {
-                name: "Conexiones Ocultas",
-                description: "Conoces atajos secretos en la ciudad que te permiten moverte más rápido",
-                type: "early",
-                levelUnlock: Math.floor(Math.random() * 43) + 1
-            },
-            {
-                name: "Resistencia Inmunológica",
-                description: "Tienes 50% de resistencia a infecciones zombi y venenos",
-                type: "early",
-                levelUnlock: Math.floor(Math.random() * 43) + 1
-            },
-            // End game special skills (unlocked at max level)
-            {
-                name: "Último Recurso",
-                description: "Al llegar a nivel máximo, puedes sacrificar 1 punto de vida para realizar 3 acciones adicionales este turno",
-                type: "end",
-                levelUnlock: 43
-            },
-            {
-                name: "Leyenda de la Supervivencia",
-                description: "En nivel máximo, todos los aliados en tu zona ganan +1 a todos sus tests",
-                type: "end",
-                levelUnlock: 43
-            },
-            {
-                name: "Maestro Zombicida",
-                description: "En nivel máximo, puedes usar cualquier habilidad de cualquier zona sin restricciones",
-                type: "end",
-                levelUnlock: 43
-            },
-            {
-                name: "Esperanza Final",
-                description: "En nivel máximo, si mueres, puedes revivir con 1 punto de vida una vez por partida",
-                type: "end",
-                levelUnlock: 43
-            },
-            {
-                name: "Juicio Final",
-                description: "En nivel máximo, una vez por partida puedes eliminar automáticamente a todos los zombis en tu zona",
-                type: "end",
-                levelUnlock: 43
-            }
-        ];
+        // Habilidades especiales eliminadas para mantener solo sistema oficial
+        // El generador ahora usa únicamente las 46 habilidades oficiales de Zombicide 2nd Edition
 
         // ZOMBICIDE 2E SKILL SYSTEM (Faithful to the original game)
 
@@ -1318,18 +1255,8 @@
                     });
                 });
 
-                // Select special skill (randomly choose early or end game)
-                const specialType = Math.random() > 0.5 ? "early" : "end";
-                const availableSpecialSkills = specialSkills.filter(skill => skill.type === specialType);
-                const selectedSpecialSkill = availableSpecialSkills[Math.floor(Math.random() * availableSpecialSkills.length)];
-
-                characterSkills.push({
-                    ...selectedSpecialSkill,
-                    unlockColor: specialType === "early" ? "purple" : "gold",
-                    isChoice: false,
-                    isSpecial: true,
-                    levelUnlock: selectedSpecialSkill.levelUnlock
-                });
+                // Habilidades especiales eliminadas - sistema ahora usa solo habilidades oficiales
+                // El generador ahora solo produce habilidades de Zombicide 2nd Edition base
 
                 currentCharacter = {
                     name,
@@ -1440,10 +1367,8 @@
                     choiceText = `<div class="skill-choice">💡 ${skill.choiceText}</div>`;
                 }
 
-                let specialText = '';
-                if (skill.isSpecial) {
-                    specialText = `<div class="skill-special">✨ Se desbloquea en nivel ${skill.levelUnlock}</div>`;
-                }
+                // Habilidades especiales eliminadas - ya no hay isSpecial ni levelUnlock
+                // El sistema ahora solo muestra habilidades oficiales de Zombicide 2nd Edition
 
                 skillElement.innerHTML = `
                     <div class="skill-header">
