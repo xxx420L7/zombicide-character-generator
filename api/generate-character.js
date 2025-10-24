@@ -84,7 +84,6 @@ export default async function handler(req, res) {
           { name: "Concentrated Attack expert", description: "Al realizar Ataque Concentrado con 2+ dados, +1 daño y sin Fuego Amigo.", xpRequired: 21, type: "combat" },
           { name: "Enhanced Senses", description: "El superviviente puede trazar Línea de Visión 1 zona más lejos en zonas de habitación.", xpRequired: 21, type: "perception" },
           { name: "Combat Reflexes", description: "Cuando aparecen Zombis dentro de la Línea de Visión, realiza inmediatamente una acción de Combate gratuita.", xpRequired: 21, type: "combat" },
-          { name: "Tactician", description: "El turno del superviviente puede resolverse en cualquier momento durante la fase de jugadores.", xpRequired: 21, type: "special" },
           { name: "Héroe", description: "El superviviente obtiene una copia de cada habilidad en su carta de personaje.", xpRequired: 21, type: "enhancement" },
           { name: "Leyenda", description: "El superviviente gana +1 a todas sus estadísticas.", xpRequired: 21, type: "enhancement" }
         ]
