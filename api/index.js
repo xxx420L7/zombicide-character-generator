@@ -239,3 +239,6 @@ function generateEnhancedBackstory(character) {
 
   return character;
 }
+
+module.exports = { handler };
+// O alternativamente: export { handler };
