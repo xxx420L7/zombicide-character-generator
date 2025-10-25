@@ -3,8 +3,66 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método no permitido' })
   }
 
+  // Parsear JSON con try-catch por si viene mal formado
+  let config = {};
   try {
-    const { zoneIndex } = req.body
+    config = JSON.parse(req.body);
+  } catch (parseError) {
+    config = {}; // Usar configuración por defecto si hay error
+  }
+
+  try {
+    // Función para obtener personajes predefinidos
+    const loadPredefinedCharacters = () => {
+      // Intentar cargar el archivo de personajes, si no existe retornar vacío
+      try {
+        const fs = require('fs');
+        if (fs.existsSync('./public/personajes.json')) {
+          return JSON.parse(fs.readFileSync('./public/personajes.json', 'utf8'));
+        }
+        return [];
+      } catch (error) {
+        console.error('Error cargando personajes predefinidos:', error);
+        return [];
+      }
+    };
+
+    // SISTEMA DE GENERACIÓN CON SOPORTE PERSONAJES PERSONALIZADOS
+    const generateCharacter = (usePredefinedCharacter = false) => {
+      // Si se especifica usar personaje predefinido, generarlo desde la base
+      if (usePredefinedCharacter && config.personajePredefinido) {
+        const predefinedCharacters = loadPredefinedCharacters();
+        const selectedCharacter = predefinedCharacters.find(p => p.nombre === config.personajePredefinido);
+        if (selectedCharacter) {
+          return {
+            ...selectedCharacter,
+            archetype: selectedCharacter.rol,
+            experience: selectedCharacter.experiencia || 0,
+            zone: getZoneByXP(selectedCharacter.experiencia || 0),
+            health: selectedCharacter.hp || 3
+            skills: selectedCharacter.habilidades.map(skillName => {
+              const fullSkill = skills.find(skill => skill.name === skillName);
+              return {
+                ...fullSkill,
+                zone: 'blue',
+                zoneName: 'Azul',
+                unlocked: true
+              };
+            }),
+            startingWeapon: startingWeapons[Math.floor(Math.random() * startingWeapons.length)]
+          };
+        }
+      }
+
+      // Generar personaje normal con configuración
+      const { hpDistribution = config.hpDistribution || "balanced", customSkills = config.customSkills || [] } = {}; // Valores por defecto
+
+      // Si hay habilidades personalizadas, limitarlas a las disponibles
+      const filteredCustomSkills = customSkills.filter(skill =>
+        skills.some(availableSkill => availableSkill.name === skill.name)
+      );
+    const { zoneIndex = req.body?.zoneIndex } = req.body || {};
+  const { hpDistribution, customSkills, usePredefinedCharacter, personajePredefinido } = req.body;
 
     // SISTEMA DE GENERACIÓN MEJORADO DE PERSONAJES ZOMBICIDE 2ND EDITION
       // Utiliza habilidades oficiales y biografías enriquecidas con IA
@@ -120,18 +178,36 @@ export default async function handler(req, res) {
         const orangeSkill = { ...getRandomElement(skills.orange), zone: 'orange', zoneName: 'Naranja', unlocked: false }
         const redSkill = { ...getRandomElement(skills.red), zone: 'red', zoneName: 'Rojo', unlocked: false }
 
+          if (filteredCustomSkills.length > 0) {
+        // Usar habilidades personalizadas - solo incluye las habilidades válidas disponibles
+        character.skills = filteredCustomSkills.map(skillName =>
+          skills.find(skill => skill.name === skillName)
+        );
+      } else {
+        // Usar sistema por defecto si no hay personalizadas
         switch(zoneIndex) {
           case 0: // Zona Azul (0-5 XP)
-            // HP variado para evitar repetición excesiva de 6
-            const healthPoolBlue = [3, 4, 5]; // Mayor variedad de HP en zona azul
-            health = healthPoolBlue[Math.floor(Math.random() * healthPoolBlue.length)];
+            health = getHealthByDistribution(hpDistribution, 0);
             experience = Math.floor(Math.random() * 6) // 0-5 XP
-            blueSkill.unlocked = true
-            yellowSkill.unlocked = false
-            orangeSkill.unlocked = false
-            redSkill.unlocked = false
-            allCharacterSkills = [blueSkill, yellowSkill, orangeSkill, redSkill]
             break
+          case 1: // Zona Amarilla (6-12 XP)
+            health = getHealthByDistribution(hpDistribution, 1);
+            experience = 6 + Math.floor(Math.random() * 7) // 6-12 XP
+            break
+          case 2: // Zona Naranja (13-20 XP)
+            health = getHealthByDistribution(hpDistribution, 2);
+            experience = 13 + Math.floor(Math.random() * 8) // 13-20 XP
+            break
+          case 3: // Zona Roja (21+ XP)
+            health = getHealthByDistribution(hpDistribution, 3);
+            experience = 21 + Math.floor(Math.random() * 10) // 21-30 XP
+            break
+        }
+
+        // Generar habilidades según la zona (o personalizadas)
+        character.skills = filteredCustomSkills.length > 0
+          ? filteredCustomSkills.map(skillName => skills.find(skill => skill.name === skillName))
+          : generateSkillsByZone(0);
           case 1: // Zona Amarilla (6-12 XP)
             // HP en zona amarilla: más variado, 3-5 HP
             const healthPoolYellow = [3, 4, 5];

@@ -1,0 +1,52 @@
+{
+  "hpDistribution": {
+    "description": "Sistema de distribución de HP para personajes",
+    "options": {
+      "balanced": "Sistema balanceado actual (3-4 HP según zona)",
+      "fixed3": "Todos los personajes con 3 HP (modo fácil)",
+      "random": "3-7 HP completamente aleatorio (modo hardcore)",
+      "custom": "Usar valores personalizados"
+    }
+  },
+  "customSkills": {
+    "description": "Habilidades personalizadas que incluirán en TODOS los personajes",
+    "skills": [
+      {
+        "name": "+1 Action",
+        "description": "El superviviente tiene una acción adicional que puede usar como desee",
+        "alwaysInclude": false
+      },
+      {
+        "name": "+1 Damage",
+        "description": "El superviviente obtiene +1 de daño con cada ataque",
+        "alwaysInclude": false
+      },
+      {
+        "name": "Lucky",
+        "description": "El superviviente puede volver a lanzar una vez todos los dados de cada acción que realiza",
+        "alwaysInclude": false
+      },
+      {
+        "name": "+1 Die: Combat",
+        "description": "Cada arma del superviviente lanza un dado extra con Acciones de Combate",
+        "alwaysInclude": false
+      },
+      {
+        "name": "Born Leader",
+        "description": "Durante el turno del superviviente, puede dar 1 acción gratuita a otro superviviente",
+        "alwaysInclude": false
+      },
+      {
+        "name": "Sniper",
+        "description": "El superviviente puede elegir libremente objetivos y los fallos no golpean a supervivientes",
+        "alwaysInclude": false
+      }
+    ]
+  },
+  "advancedSettings": {
+    "description": "Configuraciones avanzadas de generación",
+    "disableSpecialSkills": true,
+    "maxHealth": 6,
+    "minHealth": 2
+  }
+}
